@@ -12,7 +12,7 @@
                                 <v-list-tile-content v-text="data.item"></v-list-tile-content>
                             </template>
                             <template v-else>
-                                <v-list-tile-avatar v-if="data.item.avatar">
+                                <v-list-tile-avatar :tile="true" v-if="data.item.avatar">
                                     <img :src="data.item.avatar">
                                 </v-list-tile-avatar>
                                 <v-list-tile-content>
