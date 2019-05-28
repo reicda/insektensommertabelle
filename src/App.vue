@@ -76,6 +76,9 @@ import Papa from 'papaparse';
 import tauCharts from 'taucharts';
 import tp from 'taucharts/dist/plugins/tooltip';
 
+import '../node_modules/taucharts/dist/taucharts.css'
+import '../node_modules/taucharts/dist/plugins/tooltip.css'
+
 let searchParams = new URLSearchParams(window.location.search);
 
 let campains = {
@@ -312,7 +315,11 @@ export default {
     openTChart: function(props){
       props.expanded = !props.expanded;
       if (props.expanded){
+        this.$nextTick(() => {
+
       this.createTChart('tchart',this.tchartData);
+        }
+        )
       }
     },
     createTChart: function(tchartID,tchartData) {
