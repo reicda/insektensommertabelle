@@ -253,7 +253,7 @@ export default {
     ],
     insects: [],
     tableData: [],
-    tchartData:[{"artname":"Ackerhummel","taxon":"pascuorum","gattung":"Bombus","anzahl":1515,"meldungen":293,"rang":1,"durchschnitt":"5.17"},{"artname":"Kleiner Kohlweißling","taxon":"rapae","gattung":"Pieris","anzahl":622,"meldungen":225,"rang":2,"durchschnitt":"2.76"},{"artname":"Westliche Honigbiene","taxon":"mellifera","gattung":"Apis","anzahl":2062,"meldungen":173,"rang":3,"durchschnitt":"11.92"},{"artname":"Gemeine Wespe","taxon":"vulgaris","gattung":"Vespula","anzahl":1020,"meldungen":141,"rang":4,"durchschnitt":"7.23"},{"artname":"Großer Kohlweißling","taxon":"brassicae","gattung":"Pieris","anzahl":414,"meldungen":128,"rang":5,"durchschnitt":"3.23"}],
+    tchartData:[{"aktion":"Mai 2018","artname":"Ackerhummel","taxon":"pascuorum","gattung":"Bombus","anzahl":1515,"meldungen":293,"rang":1,"durchschnitt":"5.17"},{"aktion": "Juni 2018","artname":"Kleiner Kohlweißling","taxon":"rapae","gattung":"Pieris","anzahl":622,"meldungen":225,"rang":2,"durchschnitt":"2.76"},{"aktion": "Mai 2019","artname":"Westliche Honigbiene","taxon":"mellifera","gattung":"Apis","anzahl":2062,"meldungen":173,"rang":3,"durchschnitt":"11.92"},{"aktion":"Juni 2019","artname":"Gemeine Wespe","taxon":"vulgaris","gattung":"Vespula","anzahl":1020,"meldungen":141,"rang":4,"durchschnitt":"7.23"},{"aktion": "Mai 2020","artname":"Großer Kohlweißling","taxon":"brassicae","gattung":"Pieris","anzahl":414,"meldungen":128,"rang":5,"durchschnitt":"3.23"}],
     bl: [],
     top100: [],
     states: ['Niedersachsen', 'Bremen'],
@@ -341,9 +341,9 @@ export default {
         },
         data: tchartData,
         type: 'bar',
-        x: 'artname',
+        x: 'aktion',
         y: 'anzahl',
-        color: 'artname'
+        color: 'aktion'
       });
     chart.renderTo(document.getElementById(tchartID));
     },
