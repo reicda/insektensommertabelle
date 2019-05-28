@@ -65,6 +65,7 @@
           :loading="loading"
           class="elevation-1"
         >
+
           <template slot="items" slot-scope="props">
             <tr @click="openTChart(props)">
               <td>{{ props.item.rang}}</td>
@@ -76,15 +77,18 @@
               <td class="text-xs-left">{{ props.item.taxon}}</td>
             </tr>
           </template>
+
           <template slot="expand">
             <Chart></Chart>
           </template>
+
           <v-alert
             slot="no-results"
             :value="true"
             color="error"
             icon="warning"
           >Leider wurde Dein Suchbegriff "{{ search }}" nicht gefunden.</v-alert>
+
           <template slot="footer" :items="footer" v-if="footer">
             <td colspan="100%">
               Anzahl Meldungen:
@@ -93,6 +97,7 @@
               <strong>{{footer.beobachtungen}}</strong>
             </td>
           </template>
+
         </v-data-table>
       </v-card>
     </v-app>
