@@ -73,12 +73,12 @@ export default {
   mounted() {
     // eslint-disable-next-line
     // console.log(this.props.idx);
-    this.createTChart("tchartID",this.tchartData);
+    this.createTChart("tchartID", this.tchartData);
   },
   methods: {
     createTChart: function(tchartID, tchartData) {
-        // eslint-disable-next-line
-        //console.log(this.value.identifier);
+      // eslint-disable-next-line
+      //console.log(this.value.identifier);
       //props = createTChart(props);
       var chart = new tauCharts.Chart({
         plugins: [tp()],
