@@ -78,8 +78,8 @@
             </tr>
           </template>
 
-          <template slot="expand">
-            <Chart></Chart>
+          <template v-slot:expand="props">
+            <Chart :props="props"></Chart>
           </template>
 
           <v-alert

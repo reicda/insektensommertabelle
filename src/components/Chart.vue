@@ -2,7 +2,7 @@
   <v-card class="chart-card">
     <v-layout wrap pa-1>
       <v-flex xs12>
-        <div :id="'tchart-'+count"></div>
+        <div :id="'tchart-'+artname"></div>
       </v-flex>
     </v-layout>
   </v-card>
@@ -17,7 +17,7 @@ import "../../node_modules/taucharts/dist/plugins/tooltip.css";
 
 export default {
   data: () => ({
-    count:0,
+    artname: "",
     tchartData: [
       {
         aktion: "Mai 2018",
@@ -74,7 +74,9 @@ export default {
   mounted() {
     // eslint-disable-next-line
     // console.log("mounted");
-    this.createTChart("tchart-"+this.count, this.tchartData);
+    this.createTChart("tchart-"+this.artname, this.tchartData);
+    // Evil trick
+    this.artname=this.$attrs.props.item.artname;
   },
   methods: {
     createTChart: function(tchartID, tchartData) {
@@ -99,7 +101,6 @@ export default {
         color: "aktion"
       });
       chart.renderTo(document.getElementById(tchartID));
-      this.count++;
     }
   }
 };
