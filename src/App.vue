@@ -406,14 +406,4 @@ tr:hover {
 th.column:nth-child(5) {
   white-space: pre-wrap;
 }
-
-.attribution {
-  padding-top: 5px;
-}
-.attribution > a {
-  color: white;
-}
-.attribution > a:hover {
-  color: #c3daea;
-}
 </style>
