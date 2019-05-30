@@ -52,7 +52,7 @@
           ></v-text-field>
         </v-card-title>
 
-        <v-progress-linear slot="progress" color="blue" indeterminate></v-progress-linear>
+        <v-progress-linear slot="progress" color="blue" indeterminate="true"></v-progress-linear>
 
         <v-data-table
           :disable-initial-sort="true"
@@ -383,10 +383,6 @@ export default {
 </script>
 
 <style>
-#tchart {
-  height: 600px;
-}
-
 .datatable thead {
   background-color: #c3daea !important;
 }
