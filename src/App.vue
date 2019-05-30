@@ -79,7 +79,7 @@
           </template>
 
           <template v-slot:expand="props">
-            <Chart :props="props" :value="props"></Chart>
+            <Chart :props="props" :value="selectedCampain"></Chart>
           </template>
 
           <v-alert
