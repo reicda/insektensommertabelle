@@ -5,17 +5,17 @@
         <v-card-title>
           <v-select
             @change="changedAction"
-            :items="campain"
-            v-model="e2"
+            :items="campains"
+            v-model="selectedCampain"
             label="Aktion"
             class="mr-3"
           ></v-select>
 
           <v-autocomplete
             @change="changedValue"
-            :items="ranking"
+            :items="rankings"
             :menu-props="{maxHeight:'700'}"
-            v-model="e1"
+            v-model="selectedRanking"
             label="Rangliste"
             item-text="name"
             item-value="name"
@@ -65,7 +65,6 @@
           :loading="loading"
           class="elevation-1"
         >
-
           <template slot="items" slot-scope="props">
             <tr @click="openTChart(props)">
               <td>{{ props.item.rang}}</td>
@@ -79,7 +78,7 @@
           </template>
 
           <template v-slot:expand="props">
-            <Chart :props="props"></Chart>
+            <Chart :props="props" :value="props"></Chart>
           </template>
 
           <v-alert
@@ -97,7 +96,6 @@
               <strong>{{footer.beobachtungen}}</strong>
             </td>
           </template>
-
         </v-data-table>
       </v-card>
     </v-app>
@@ -106,73 +104,7 @@
 
 <script>
 import Chart from "./components/Chart";
-import * as $ from "jquery";
 import Papa from "papaparse";
-
-let searchParams = new URLSearchParams(window.location.search);
-
-let campains = {
-  "2018-06": { text: "Juni 2018", value: "2018-06" },
-  "2018-08": { text: "August 2018", value: "2018-08" },
-  "2019-06": { text: "Juni 2019", value: "2019-06" }
-};
-
-function loadData(vi, campain) {
-  $.ajax({
-    type: "GET",
-    url:
-      "https://karten.nabu.de/insektensommer/data/beobachtungen-" +
-      campain +
-      ".csv",
-    //url: 'assets/data/beobachtungen-'+campain+'.csv',
-    dataType: "text",
-    success: function(data) {
-      processData(vi, data);
-    }
-  });
-}
-function processData(vi, data) {
-  var results = Papa.parse(data, {
-    header: true
-  });
-  vi.insects = results.data;
-  var insekten = vi.insects;
-  const unique = new Map();
-  insekten.forEach(item => {
-    const entry = unique.get(item.artname);
-    if (!entry) {
-      unique.set(item.artname, {
-        artname: item.artname,
-        taxon: item.taxon,
-        gattung: item.gattung,
-        anzahl: Number.parseInt(item.anzahl),
-        meldungen: 1
-      });
-    } else {
-      ++entry.meldungen;
-      entry.anzahl += Number.parseInt(item.anzahl);
-    }
-  });
-  const top = [...unique.values()];
-  top.sort(function(a, b) {
-    return b.meldungen - a.meldungen;
-  });
-
-  const top100 = top.slice(0, 100);
-  for (let i = 0; i < top100.length; i++) {
-    top100[i].rang = i + 1;
-    top100[i].durchschnitt = Number.parseFloat(
-      Number.parseInt(top100[i].anzahl) / Number.parseInt(top100[i].meldungen)
-    ).toFixed(2);
-  }
-  vi.tableData = top100;
-  vi.top100 = top100;
-  vi.footer = {
-    beobachtungen: vi.insects.length - 1,
-    meldungen: anzahlMeldungen(vi.insects) - 1
-  };
-  vi.loading = false;
-}
 
 function anzahlMeldungen(insekten) {
   var beobachtungen = [];
@@ -287,7 +219,7 @@ export default {
       search: "",
       loading: true,
       footer: {},
-      campain: [
+      campains: [
         { text: "Juni 2019", value: "2019-06" },
         { text: "August 2018", value: "2018-08" },
         { text: "Juni 2018", value: "2018-06" }
@@ -303,12 +235,10 @@ export default {
       ],
       insects: [],
       tableData: [],
-      bl: [],
       top100: [],
-      states: ["Niedersachsen", "Bremen"],
-      e1: { name: "Top 100" },
-      e2: { text: "Juni 2019", value: "2019-06" },
-      ranking: [
+      selectedRanking: { name: "Top 100" },
+      selectedCampain: { text: "Juni 2019", value: "2019-06" },
+      rankings: [
         { header: "Ranglisten" },
         { name: "Top 100", avatar: "images/brd.svg" },
         { divider: true },
@@ -344,25 +274,85 @@ export default {
     };
   },
   created: function() {
+    // TODO Could be done better
+    let campains = {
+      "2018-06": { text: "Juni 2018", value: "2018-06" },
+      "2018-08": { text: "August 2018", value: "2018-08" },
+      "2019-06": { text: "Juni 2019", value: "2019-06" }
+    };
+
+    let searchParams = new URLSearchParams(window.location.search);
     let param;
     if (searchParams.has("campain")) {
       param = searchParams.get("campain");
-      this.e2 = campains[param];
-    } else {
-      // Default
-      param = "2019-06";
-      this.e2 = campains[param];
+      this.selectedCampain = campains[param];
     }
-    loadData(this, param);
   },
-  mounted: function() {},
+  mounted: function() {
+    this.loadData();
+  },
   methods: {
+    loadData() {
+      this.loading=true;
+      fetch("/data/beobachtungen-" + this.selectedCampain.value + ".csv")
+        .then(response => response.text())
+        .then(data => {
+          var results = Papa.parse(data, { header: true });
+          this.insects = results.data;
+          this.processData();
+        });
+    },
+    processData() {
+      const unique = new Map();
+      this.insects.forEach(item => {
+        const entry = unique.get(item.artname);
+        if (!entry) {
+          unique.set(item.artname, {
+            artname: item.artname,
+            taxon: item.taxon,
+            gattung: item.gattung,
+            anzahl: Number.parseInt(item.anzahl),
+            meldungen: 1
+          });
+        } else {
+          ++entry.meldungen;
+          entry.anzahl += Number.parseInt(item.anzahl);
+        }
+      });
+      const top = [...unique.values()];
+      top.sort(function(a, b) {
+        return b.meldungen - a.meldungen;
+      });
+
+      const top100 = top.slice(0, 100);
+      for (let i = 0; i < top100.length; i++) {
+        top100[i].rang = i + 1;
+        top100[i].durchschnitt = Number.parseFloat(
+          Number.parseInt(top100[i].anzahl) /
+            Number.parseInt(top100[i].meldungen)
+        ).toFixed(2);
+      }
+      this.tableData = top100;
+      this.top100 = top100;
+      this.footer = {
+        beobachtungen: this.insects.length - 1,
+        meldungen: anzahlMeldungen(this.insects) - 1
+      };
+      this.loading = false;
+    },
     openTChart: function(props) {
       props.expanded = !props.expanded;
     },
     changedAction: function(value) {
-      this.e1 = { name: "Top 100" };
-      loadData(this, value);
+      this.selectedRanking = { name: "Top 100" };
+      // TODO Could be done better
+      let campains = {
+        "2018-06": { text: "Juni 2018", value: "2018-06" },
+        "2018-08": { text: "August 2018", value: "2018-08" },
+        "2019-06": { text: "Juni 2019", value: "2019-06" }
+      };
+      this.selectedCampain = campains[value];
+      this.loadData();
     },
     changedValue: function(value) {
       if (value === "Top 100") {
