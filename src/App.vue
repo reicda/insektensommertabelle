@@ -287,6 +287,8 @@ export default {
   },
   methods: {
     loadData() {
+      this.tableData = [];
+      this.insects = [];
       this.loading = true;
       fetch("/data/beobachtungen-" + this.selectedCampain.value + ".csv")
         .then(response => response.text())
@@ -341,11 +343,18 @@ export default {
       }
     },
     changedAction: function(value) {
+      //close all expanded slots
+      for (let i = 0; i < this.tableData.length; i += 1) {
+        const item = this.tableData[i];
+        this.$set(this.$refs.dTable.expanded, item.artname, false);
+      }
+      this.tableData = [];
       this.selectedRanking = { name: "Top 100" };
       this.selectedCampain = this.campains.find(o => o.value == value);
       this.loadData();
     },
     changeRanking: function(value) {
+      this.tableData = [];
       if (value === "Top 100") {
         this.tableData = this.top100;
         //this.footer = {
