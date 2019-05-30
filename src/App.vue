@@ -287,7 +287,7 @@ export default {
   },
   methods: {
     loadData() {
-      this.loading=true;
+      this.loading = true;
       fetch("/data/beobachtungen-" + this.selectedCampain.value + ".csv")
         .then(response => response.text())
         .then(data => {
@@ -336,8 +336,8 @@ export default {
     },
     openTChart: function(props) {
       // TODO: Fix if other rankings are implemented!
-      if (this.selectedRanking.name === "Top 100" ){
-      props.expanded = !props.expanded;
+      if (this.selectedRanking.name === "Top 100") {
+        props.expanded = !props.expanded;
       }
     },
     changedAction: function(value) {
@@ -383,9 +383,9 @@ export default {
       }
       //close all expanded slots
       for (let i = 0; i < this.tableData.length; i += 1) {
-      const item = this.tableData[i];
-      this.$set(this.$refs.dTable.expanded, item.artname, false)
-    }
+        const item = this.tableData[i];
+        this.$set(this.$refs.dTable.expanded, item.artname, false);
+      }
     }
   }
 };
