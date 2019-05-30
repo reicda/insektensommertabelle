@@ -14,47 +14,41 @@ import tp from "taucharts/dist/plugins/tooltip";
 
 import "../../node_modules/taucharts/dist/taucharts.css";
 import "../../node_modules/taucharts/dist/plugins/tooltip.css";
+import august2018_top100 from "./august2018_top100.js";
+import juni2018_top100 from "./juni2018_top100.js";
 
 export default {
   data: () => ({
-    top100: [],
+    august2018_top100: august2018_top100,
+    juni2018_top100: juni2018_top100,
     artname: "",
     tchartData: []
   }),
   mounted() {
-    fetch("data/august2018_top100.json")
-      .then(response => response.json())
-      .then(data => {
-        this.top100 = data;
-        this.createData(this.artname);
-        this.createTChart("tchart-" + this.artname, this.tchartData);
-      });
-    // eslint-disable-next-line
-    // console.log("mounted");
-    // Evil trick
     this.artname = this.$attrs.props.item.artname;
+    this.createData();
+    this.$nextTick(() => {
+      this.createTChart();
+    });
   },
   methods: {
-    createData: function(artname) {
-      // eslint-disable-next-line
-      console.log(artname);
-      // eslint-disable-next-line
-      console.log(this.top100);
-      let obj2018 = this.top100.find(o => o.artname === artname);
-      obj2018["aktion"] = "August 2018";
-      // eslint-disable-next-line
-      console.log(obj2018);
-      let obj2019 = this.$attrs.props.item;
-      obj2019["aktion"] = "Mai 2019";
-      // eslint-disable-next-line
-      console.log(obj2019);
-      this.tchartData.push(obj2018);
-      this.tchartData.push(obj2019);
+    createData: function() {
+      this.tchartData=[];
+      let campain201806 = this.juni2018_top100.find(
+        o => o.artname === this.artname
+      );
+      let campain201808 = this.august2018_top100.find(
+        o => o.artname === this.artname
+      );
+      campain201806["aktion"] = "Juni 2018";
+      campain201808["aktion"] = "August 2018";
+      let actualCampain = this.$attrs.props.item;
+      actualCampain["aktion"] = "Mai 2019";
+      this.tchartData.push(campain201806);
+      this.tchartData.push(campain201808);
+      this.tchartData.push(actualCampain);
     },
-    createTChart: function(tchartID, tchartData) {
-      // eslint-disable-next-line
-      //console.log(this.value.identifier);
-      //props = createTChart(props);
+    createTChart: function() {
       var chart = new tauCharts.Chart({
         plugins: [tp()],
         guide: {
@@ -66,13 +60,13 @@ export default {
           },
           showGridLines: "xy"
         },
-        data: tchartData,
+        data: this.tchartData,
         type: "bar",
         x: "aktion",
         y: "anzahl",
         color: "aktion"
       });
-      chart.renderTo(document.getElementById(tchartID));
+      chart.renderTo(document.getElementById("tchart-" + this.artname));
     }
   }
 };
