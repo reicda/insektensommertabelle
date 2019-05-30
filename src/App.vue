@@ -64,6 +64,7 @@
           item-key="artname"
           :loading="loading"
           class="elevation-1"
+          ref="dTable"
         >
           <template slot="items" slot-scope="props">
             <tr @click="openTChart(props)">
@@ -380,6 +381,11 @@ export default {
         this.tableData = top5bundesland(this.insects, value);
         this.footer = anzahlBundesland(this.insects, value);
       }
+      //close all expanded slots
+      for (let i = 0; i < this.tableData.length; i += 1) {
+      const item = this.tableData[i];
+      this.$set(this.$refs.dTable.expanded, item.artname, false)
+    }
     }
   }
 };
