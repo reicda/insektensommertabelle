@@ -2,7 +2,7 @@
   <v-card class="chart-card">
     <v-layout wrap pa-1>
       <v-flex xs12>
-        <div :id="'tchart-'+artname"></div>
+        <div :id="'tchart-'+artname" class="tchart"></div>
       </v-flex>
     </v-layout>
   </v-card>
@@ -17,68 +17,40 @@ import "../../node_modules/taucharts/dist/plugins/tooltip.css";
 
 export default {
   data: () => ({
+    top100: [],
     artname: "",
-    tchartData: [
-      {
-        aktion: "Mai 2018",
-        artname: "Ackerhummel",
-        taxon: "pascuorum",
-        gattung: "Bombus",
-        anzahl: 1515,
-        meldungen: 293,
-        rang: 1,
-        durchschnitt: "5.17"
-      },
-      {
-        aktion: "Juni 2018",
-        artname: "Kleiner Kohlweißling",
-        taxon: "rapae",
-        gattung: "Pieris",
-        anzahl: 622,
-        meldungen: 225,
-        rang: 2,
-        durchschnitt: "2.76"
-      },
-      {
-        aktion: "Mai 2019",
-        artname: "Westliche Honigbiene",
-        taxon: "mellifera",
-        gattung: "Apis",
-        anzahl: 2062,
-        meldungen: 173,
-        rang: 3,
-        durchschnitt: "11.92"
-      },
-      {
-        aktion: "Juni 2019",
-        artname: "Gemeine Wespe",
-        taxon: "vulgaris",
-        gattung: "Vespula",
-        anzahl: 1020,
-        meldungen: 141,
-        rang: 4,
-        durchschnitt: "7.23"
-      },
-      {
-        aktion: "Mai 2020",
-        artname: "Großer Kohlweißling",
-        taxon: "brassicae",
-        gattung: "Pieris",
-        anzahl: 414,
-        meldungen: 128,
-        rang: 5,
-        durchschnitt: "3.23"
-      }
-    ]
+    tchartData: []
   }),
   mounted() {
+    fetch("data/august2018_top100.json")
+      .then(response => response.json())
+      .then(data => {
+        this.top100 = data;
+        this.createData(this.artname);
+        this.createTChart("tchart-" + this.artname, this.tchartData);
+      });
     // eslint-disable-next-line
     // console.log("mounted");
-    this.createTChart("tchart-"+this.artname, this.tchartData);
     // Evil trick
-    this.artname=this.$attrs.props.item.artname;
+    this.artname = this.$attrs.props.item.artname;
   },
   methods: {
+    createData: function(artname) {
+      // eslint-disable-next-line
+      console.log(artname);
+      // eslint-disable-next-line
+      console.log(this.top100);
+      let obj2018 = this.top100.find(o => o.artname === artname);
+      obj2018["aktion"] = "August 2018";
+      // eslint-disable-next-line
+      console.log(obj2018);
+      let obj2019 = this.$attrs.props.item;
+      obj2019["aktion"] = "Mai 2019";
+      // eslint-disable-next-line
+      console.log(obj2019);
+      this.tchartData.push(obj2018);
+      this.tchartData.push(obj2019);
+    },
     createTChart: function(tchartID, tchartData) {
       // eslint-disable-next-line
       //console.log(this.value.identifier);
@@ -87,10 +59,10 @@ export default {
         plugins: [tp()],
         guide: {
           x: {
-            label: { text: "Aktionen" }
+            label: { text: "Aktion" }
           },
           y: {
-            label: { text: "Meldungen" }
+            label: { text: "Anzahl" }
           },
           showGridLines: "xy"
         },
@@ -107,4 +79,7 @@ export default {
 </script>
 
 <style>
+.tchart {
+  height: 25em;
+}
 </style>
