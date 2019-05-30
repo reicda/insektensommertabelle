@@ -12,7 +12,7 @@
           ></v-select>
 
           <v-autocomplete
-            @change="changedValue"
+            @change="changeRanking"
             :items="rankings"
             :menu-props="{maxHeight:'700'}"
             v-model="selectedRanking"
@@ -334,14 +334,17 @@ export default {
       this.loading = false;
     },
     openTChart: function(props) {
+      // TODO: Fix if other rankings are implemented!
+      if (this.selectedRanking.name === "Top 100" ){
       props.expanded = !props.expanded;
+      }
     },
     changedAction: function(value) {
       this.selectedRanking = { name: "Top 100" };
       this.selectedCampain = this.campains.find(o => o.value == value);
       this.loadData();
     },
-    changedValue: function(value) {
+    changeRanking: function(value) {
       if (value === "Top 100") {
         this.tableData = this.top100;
         //this.footer = {
