@@ -274,18 +274,11 @@ export default {
     };
   },
   created: function() {
-    // TODO Could be done better
-    let campains = {
-      "2018-06": { text: "Juni 2018", value: "2018-06" },
-      "2018-08": { text: "August 2018", value: "2018-08" },
-      "2019-06": { text: "Juni 2019", value: "2019-06" }
-    };
-
     let searchParams = new URLSearchParams(window.location.search);
     let param;
     if (searchParams.has("campain")) {
       param = searchParams.get("campain");
-      this.selectedCampain = campains[param];
+      this.selectedCampain = this.campains.find(o => o.value == param);
     }
   },
   mounted: function() {
@@ -345,13 +338,7 @@ export default {
     },
     changedAction: function(value) {
       this.selectedRanking = { name: "Top 100" };
-      // TODO Could be done better
-      let campains = {
-        "2018-06": { text: "Juni 2018", value: "2018-06" },
-        "2018-08": { text: "August 2018", value: "2018-08" },
-        "2019-06": { text: "Juni 2019", value: "2019-06" }
-      };
-      this.selectedCampain = campains[value];
+      this.selectedCampain = this.campains.find(o => o.value == value);
       this.loadData();
     },
     changedValue: function(value) {
