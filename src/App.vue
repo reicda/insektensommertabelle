@@ -291,7 +291,15 @@ export default {
       this.insects = [];
       this.loading = true;
       //fetch("/data/beobachtungen-" + this.selectedCampain.value + ".csv")
-      fetch("https://karten.nabu.de/insektensommer/data/beobachtungen-" + this.selectedCampain.value + ".csv")
+      fetch(
+        "https://karten.nabu.de/insektensommer/data/beobachtungen-" +
+          this.selectedCampain.value +
+          ".csv",
+        {
+          method: "GET",
+          header: { "Cache-Control": "no-cache", Pragma: "no-cache" }
+        }
+      )
         .then(response => response.text())
         .then(data => {
           var results = Papa.parse(data, { header: true });
