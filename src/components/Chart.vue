@@ -66,14 +66,14 @@ export default {
             label: { text: "Aktion" }
           },
           y: {
-            label: { text: "Anzahl" }
+            label: { text: "Meldungen" }
           },
           showGridLines: "xy"
         },
         data: this.tchartData,
         type: "bar",
         x: "aktion",
-        y: "anzahl",
+        y: "meldungen",
         color: "aktion"
       });
       chart.renderTo(document.getElementById("tchart-" + this.artname));
