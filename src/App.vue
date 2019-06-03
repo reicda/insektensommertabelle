@@ -19,6 +19,8 @@
             label="Rangliste"
             item-text="name"
             item-value="name"
+            :hint="`${selectedRanking.group}`"
+            return-object
           >
             <template slot="item" slot-scope="data">
               <template
@@ -35,7 +37,7 @@
                 </v-list-tile-avatar>
                 <v-list-tile-content>
                   <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
-                  <v-list-tile-sub-title v-html="data.item.group"></v-list-tile-sub-title>
+                  <!--v-list-tile-sub-title v-html="data.item.group"></v-list-tile-sub-title-->
                 </v-list-tile-content>
               </template>
             </template>
@@ -244,33 +246,34 @@ export default {
         { name: "Top 100", avatar: "images/brd.svg" },
         { divider: true },
         { header: "TOP5 Bundesländer" },
-        { name: "Baden-Württemberg", avatar: "images/bw.svg" },
-        { name: "Bayern", avatar: "images/by.svg" },
-        { name: "Brandenburg & Berlin", avatar: "images/bb_be.svg" },
-        { name: "Hessen", avatar: "images/he.svg" },
-        { name: "Mecklenburg-Vorpommern", avatar: "images/mv.svg" },
-        { name: "Niedersachsen & Bremen", avatar: "images/ni_hb.svg" },
-        { name: "Nordrhein-Westfalen", avatar: "images/nw.svg" },
-        { name: "Rheinland-Pfalz", avatar: "images/rp.svg" },
-        { name: "Saarland", avatar: "images/sl.svg" },
-        { name: "Sachsen", avatar: "images/sn.svg" },
-        { name: "Sachsen-Anhalt", avatar: "images/st.svg" },
+        { name: "Baden-Württemberg", avatar: "images/bw.svg", group: "TOP5 Bundesländer"},
+        { name: "Bayern", avatar: "images/by.svg", group: "TOP5 Bundesländer"},
+        { name: "Brandenburg & Berlin", avatar: "images/bb_be.svg", group: "TOP5 Bundesländer"},
+        { name: "Hessen", avatar: "images/he.svg", group: "TOP5 Bundesländer"},
+        { name: "Mecklenburg-Vorpommern", avatar: "images/mv.svg", group: "TOP5 Bundesländer"},
+        { name: "Niedersachsen & Bremen", avatar: "images/ni_hb.svg", group: "TOP5 Bundesländer"},
+        { name: "Nordrhein-Westfalen", avatar: "images/nw.svg", group: "TOP5 Bundesländer"},
+        { name: "Rheinland-Pfalz", avatar: "images/rp.svg", group: "TOP5 Bundesländer"},
+        { name: "Saarland", avatar: "images/sl.svg", group: "TOP5 Bundesländer"},
+        { name: "Sachsen", avatar: "images/sn.svg", group: "TOP5 Bundesländer"},
+        { name: "Sachsen-Anhalt", avatar: "images/st.svg", group: "TOP5 Bundesländer"},
         {
           name: "Schleswig-Holstein & Hamburg",
-          avatar: "images/sh_hh.svg"
+          avatar: "images/sh_hh.svg",
+          group: "TOP5 Bundesländer"
         },
-        { name: "Thüringen", avatar: "images/th.svg" },
+        { name: "Thüringen", avatar: "images/th.svg", group: "TOP5 Bundesländer"},
         { divider: true },
-        { header: "TOP5 Lebensraum" },
-        { name: "Garten" },
-        { name: "Balkon" },
-        { name: "Park" },
-        { name: "Wiese" },
-        { name: "Wald" },
-        { name: "Feld" },
-        { name: "Teich" },
-        { name: "Bach/Fluss" },
-        { name: "Sonstiges" }
+        { header: "TOP5 Lebensräume" },
+        { name: "Garten", group: "TOP5 Lebensräume"},
+        { name: "Balkon", group: "TOP5 Lebensräume"},
+        { name: "Park", group: "TOP5 Lebensräume"},
+        { name: "Wiese", group: "TOP5 Lebensräume"},
+        { name: "Wald", group: "TOP5 Lebensräume"},
+        { name: "Feld", group: "TOP5 Lebensräume"},
+        { name: "Teich", group: "TOP5 Lebensräume"},
+        { name: "Bach/Fluss", group: "TOP5 Lebensräume" },
+        { name: "Sonstiges", group: "TOP5 Lebensräume" }
       ]
     };
   },
@@ -362,9 +365,9 @@ export default {
       this.selectedCampain = this.campains.find(o => o.value == value);
       this.loadData();
     },
-    changeRanking: function(value) {
+    changeRanking: function(obj) {
       this.tableData = [];
-      if (value === "Top 100") {
+      if (obj.name === "Top 100") {
         this.tableData = this.top100;
         //this.footer = {
         //  meldungen: 2760,
@@ -375,29 +378,18 @@ export default {
           beobachtungen: this.insects.length - 1,
           meldungen: anzahlMeldungen(this.insects) - 1
         };
-      } else if (
-        [
-          "Garten",
-          "Balkon",
-          "Park",
-          "Wiese",
-          "Wald",
-          "Feld",
-          "Teich",
-          "Bach/Fluss",
-          "Sonstiges"
-        ].includes(value)
-      ) {
-        if (value === "Garten") {
-          this.tableData = lebensraumTop5(this.insects, value);
-          this.footer = anzahlLebensraum(this.insects, value);
+      } else if ( obj.group ==="TOP5 Lebensräume")
+      {
+        if (obj.name === "Garten") {
+          this.tableData = lebensraumTop5(this.insects, obj.name);
+          this.footer = anzahlLebensraum(this.insects, obj.name);
         } else {
-          this.tableData = lebensraumTop5(this.insects, " " + value);
-          this.footer = anzahlLebensraum(this.insects, " " + value);
+          this.tableData = lebensraumTop5(this.insects, " " + obj.name);
+          this.footer = anzahlLebensraum(this.insects, " " + obj.name);
         }
-      } else {
-        this.tableData = top5bundesland(this.insects, value);
-        this.footer = anzahlBundesland(this.insects, value);
+      } else if (obj.group === "TOP5 Bundesländer"){
+        this.tableData = top5bundesland(this.insects, obj.name);
+        this.footer = anzahlBundesland(this.insects, obj.name);
       }
       //close all expanded slots
       for (let i = 0; i < this.tableData.length; i += 1) {
