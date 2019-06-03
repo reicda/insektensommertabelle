@@ -14,12 +14,12 @@ import tp from "taucharts/dist/plugins/tooltip";
 
 import "../../node_modules/taucharts/dist/taucharts.css";
 import "../../node_modules/taucharts/dist/plugins/tooltip.css";
-import august2018_top100 from "./august2018_top100.js";
+//import august2018_top100 from "./august2018_top100.js";
 import juni2018_top100 from "./juni2018_top100.js";
 
 export default {
   data: () => ({
-    august2018_top100: august2018_top100,
+    //august2018_top100: august2018_top100,
     juni2018_top100: juni2018_top100,
     selectedCampain: "",
     actualCampain: {},
@@ -42,17 +42,17 @@ export default {
       let campain201806 = this.juni2018_top100.find(
         o => o.artname === this.artname
       );
-      let campain201808 = this.august2018_top100.find(
-        o => o.artname === this.artname
-      );
+      //let campain201808 = this.august2018_top100.find(
+      //  o => o.artname === this.artname
+      //);
       if (campain201806 !== undefined) {
         campain201806["aktion"] = "Juni 2018";
         this.tchartData.push(campain201806);
       }
-      if (campain201808 !== undefined) {
-        campain201808["aktion"] = "August 2018";
-        this.tchartData.push(campain201808);
-      }
+      //if (campain201808 !== undefined) {
+      //  campain201808["aktion"] = "August 2018";
+      //  this.tchartData.push(campain201808);
+      //}
       this.actualCampain["aktion"] = this.selectedCampain;
       this.tchartData.push(this.actualCampain);
       // Strange TauCharts seems to ignore duplicated entries.
@@ -85,5 +85,6 @@ export default {
 <style>
 .tchart {
   height: 25em;
+  width: 50%;
 }
 </style>
