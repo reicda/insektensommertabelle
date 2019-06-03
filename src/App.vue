@@ -343,8 +343,8 @@ export default {
       this.tableData = top100;
       this.top100 = top100;
       this.footer = {
-        beobachtungen: this.insects.length - 1,
-        meldungen: anzahlMeldungen(this.insects) - 1
+        beobachtungen: this.insects.length ,
+        meldungen: anzahlMeldungen(this.insects)
       };
       this.loading = false;
     },
