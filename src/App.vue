@@ -109,58 +109,6 @@
 import Chart from "./components/Chart";
 import Papa from "papaparse";
 
-function anzahlMeldungen(beobachtungen) {
-  let latlon = [];
-  beobachtungen.forEach(function(beobachtung) {
-    latlon.push([beobachtung.lat, beobachtung.lon]);
-  });
-  // prevent duplicates
-  var meldungen = latlon
-    .map(JSON.stringify)
-    .reverse()
-    .filter(function(value, index, array) {
-      return array.indexOf(value, index + 1) === -1;
-    })
-    .reverse()
-    .map(JSON.parse);
-  return meldungen.length;
-}
-
-function top5(beobachtungen) {
-  // Totaling anzahl and meldungen for unique artname
-  const uniqueMap = new Map();
-  beobachtungen.forEach(beobachtung => {
-    const entry = uniqueMap.get(beobachtung.artname);
-    if (!entry) {
-      uniqueMap.set(beobachtung.artname, {
-        artname: beobachtung.artname,
-        taxon: beobachtung.taxon,
-        gattung: beobachtung.gattung,
-        anzahl: Number.parseInt(beobachtung.anzahl),
-        meldungen: 1
-      });
-    } else {
-      ++entry.meldungen;
-      entry.anzahl += Number.parseInt(beobachtung.anzahl);
-    }
-  });
-  // Create list
-  const top = [...uniqueMap.values()];
-  // Sort by meldungen and then by anzahl
-  top.sort(function(a, b) {
-    return b.meldungen - a.meldungen || b.anzahl - a.anzahl;
-  });
-  // Return a top5 with pasted rang into it.
-  let top5 = top.slice(0, 5);
-  for (let i = 0; i < top5.length; i++) {
-    top5[i].rang = i + 1;
-    top5[i].durchschnitt = Number.parseFloat(
-      Number.parseInt(top5[i].anzahl) / Number.parseInt(top5[i].meldungen)
-    ).toFixed(2);
-  }
-  return top5;
-}
-
 export default {
   name: "app",
   components: {
@@ -298,10 +246,30 @@ export default {
         .then(data => {
           var results = Papa.parse(data, { header: true });
           this.beobachtungen = results.data;
-          this.tableData=this.top100(this.beobachtungen);
+          this.tableData = this.top(this.beobachtungen, 100);
+          this.footer.beobachtungen = this.beobachtungen.length;
+          this.footer.meldungen = this.anzahlMeldungen(this.beobachtungen);
+          this.loading = false;
         });
     },
-    top100(beobachtungen) {
+    anzahlMeldungen(beobachtungen) {
+      let latlon = [];
+      beobachtungen.forEach(function(beobachtung) {
+        latlon.push([beobachtung.lat, beobachtung.lon]);
+      });
+      // prevent duplicates
+      var meldungen = latlon
+        .map(JSON.stringify)
+        .reverse()
+        .filter(function(value, index, array) {
+          return array.indexOf(value, index + 1) === -1;
+        })
+        .reverse()
+        .map(JSON.parse);
+      return meldungen.length;
+    },
+    top(beobachtungen, slice) {
+      // Totaling anzahl and meldungen for unique artname
       const uniqueMap = new Map();
       beobachtungen.forEach(beobachtung => {
         const entry = uniqueMap.get(beobachtung.artname);
@@ -318,32 +286,29 @@ export default {
           entry.anzahl += Number.parseInt(beobachtung.anzahl);
         }
       });
+      // Create list
       const top = [...uniqueMap.values()];
+      // Sort by meldungen and then by anzahl
       top.sort(function(a, b) {
         return b.meldungen - a.meldungen || b.anzahl - a.anzahl;
       });
-
-      const top100 = top.slice(0, 100);
-      for (let i = 0; i < top100.length; i++) {
-        top100[i].rang = i + 1;
-        top100[i].durchschnitt = Number.parseFloat(
-          Number.parseInt(top100[i].anzahl) /
-            Number.parseInt(top100[i].meldungen)
+      // Return a sliced with pasted rang into it.
+      let sliced = top.slice(0, slice);
+      for (let i = 0; i < sliced.length; i++) {
+        sliced[i].rang = i + 1;
+        sliced[i].durchschnitt = Number.parseFloat(
+          Number.parseInt(sliced[i].anzahl) /
+            Number.parseInt(sliced[i].meldungen)
         ).toFixed(2);
       }
-      this.footer = {
-        beobachtungen: this.beobachtungen.length,
-        meldungen: anzahlMeldungen(this.beobachtungen)
-      };
-      this.loading = false;
-      return top100;
+      return sliced;
     },
     lebensraum(beobachtungen, lebensraum) {
       const beobachtungenLebensraum = beobachtungen.filter(
         beobachtung => beobachtung.lebensraum === lebensraum
       );
       this.footer.beobachtungen = beobachtungenLebensraum.length;
-      this.footer.meldungen = anzahlMeldungen(beobachtungenLebensraum);
+      this.footer.meldungen = this.anzahlMeldungen(beobachtungenLebensraum);
       return beobachtungenLebensraum;
     },
     bundesland(beobachtungen, bundesland) {
@@ -351,7 +316,7 @@ export default {
         beobachtung => beobachtung.bundesland === bundesland
       );
       this.footer.beobachtungen = beobachtungenBundesland.length;
-      this.footer.meldungen = anzahlMeldungen(beobachtungenBundesland);
+      this.footer.meldungen = this.anzahlMeldungen(beobachtungenBundesland);
       return beobachtungenBundesland;
     },
     openTChart: function(props) {
@@ -367,8 +332,8 @@ export default {
         this.$set(this.$refs.dTable.expanded, item.artname, false);
       }
       this.tableData = [];
-      this.footer.meldungen= 0;
-      this.footer.beobachtungen= 0;
+      this.footer.meldungen = 0;
+      this.footer.beobachtungen = 0;
       this.selectedRanking = { name: "Top 100" };
       this.selectedCampain = this.campains.find(o => o.value == value);
       this.loadData();
@@ -376,27 +341,31 @@ export default {
     changeRanking: function(obj) {
       this.tableData = [];
       if (obj.name === "Top 100") {
-        this.tableData = this.top100(this.beobachtungen);
+        this.loading = true;
+        this.tableData = this.top(this.beobachtungen, 100);
+        this.footer.beobachtungen = this.beobachtungen.length;
+        this.footer.meldungen = this.anzahlMeldungen(this.beobachtungen);
+        this.loading = false;
       } else if (obj.group === "TOP5 Lebensräume") {
         if (obj.name === "Garten") {
           let beobachtungenLebensraum = this.lebensraum(
             this.beobachtungen,
             obj.name
           );
-          this.tableData = top5(beobachtungenLebensraum);
+          this.tableData = this.top(beobachtungenLebensraum, 5);
         } else {
           let beobachtungenLebensraum = this.lebensraum(
             this.beobachtungen,
             " " + obj.name
           );
-          this.tableData = top5(beobachtungenLebensraum);
+          this.tableData = this.top(beobachtungenLebensraum, 5);
         }
       } else if (obj.group === "TOP5 Bundesländer") {
         let beobachtungenBundesland = this.bundesland(
           this.beobachtungen,
           obj.name
         );
-        this.tableData = top5(beobachtungenBundesland);
+        this.tableData = this.top(beobachtungenBundesland, 5);
       }
       //close all expanded slots
       for (let i = 0; i < this.tableData.length; i += 1) {
