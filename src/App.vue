@@ -311,10 +311,10 @@ export default {
             taxon: beobachtung.taxon,
             gattung: beobachtung.gattung,
             anzahl: Number.parseInt(beobachtung.anzahl),
-            meldungen: 0
+            meldungen: 1
           });
         } else {
-          entry.meldungen++;
+          ++entry.meldungen;
           entry.anzahl += Number.parseInt(beobachtung.anzahl);
         }
       });
