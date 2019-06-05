@@ -19,7 +19,7 @@
             label="Rangliste"
             item-text="name"
             item-value="name"
-            :hint="`${selectedRanking.group}`"
+            :hint="`${selectedRanking.group?selectedRanking.group:''}`"
             return-object
           >
             <template slot="item" slot-scope="data">
