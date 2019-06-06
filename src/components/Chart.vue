@@ -16,20 +16,26 @@ import "../../node_modules/taucharts/dist/taucharts.css";
 import "../../node_modules/taucharts/dist/plugins/tooltip.css";
 //import august2018_top100 from "./august2018_top100.js";
 import juni2018_top100 from "./juni2018_top100.js";
+import juni2018_top5Lebensraeume from "./juni2018_top5Lebensraeume";
 
 export default {
   data: () => ({
     //august2018_top100: august2018_top100,
     juni2018_top100: juni2018_top100,
+    juni2018_top5Lebensraeume: juni2018_top5Lebensraeume,
     selectedCampain: "",
+    selectedRanking: "",
+    selectedRankingGroup: "",
     actualCampain: {},
     artname: "",
     tchartData: []
   }),
   mounted() {
-    this.selectedCampain = this.$attrs.value.text;
-    this.artname = this.$attrs.props.item.artname;
-    this.actualCampain = this.$attrs.props.item;
+    this.selectedCampain = this.$attrs.value[1].text;
+    this.artname = this.$attrs.value[0].item.artname;
+    this.actualCampain = this.$attrs.value[0].item;
+    this.selectedRanking = this.$attrs.value[2].name;
+    this.selectedRankingGroup = this.$attrs.value[2].group;
 
     this.createData();
     this.$nextTick(() => {
@@ -38,25 +44,41 @@ export default {
   },
   methods: {
     createData: function() {
-      this.tchartData = [];
-      let campain201806 = this.juni2018_top100.find(
-        o => o.artname === this.artname
-      );
-      //let campain201808 = this.august2018_top100.find(
-      //  o => o.artname === this.artname
-      //);
-      if (campain201806 !== undefined) {
-        campain201806["aktion"] = "Juni 2018";
-        this.tchartData.push(campain201806);
+      if (this.selectedRanking == "TOP100") {
+        this.tchartData = [];
+        let campain201806 = this.juni2018_top100.find(
+          o => o.artname === this.artname
+        );
+        //let campain201808 = this.august2018_top100.find(
+        //  o => o.artname === this.artname
+        //);
+        if (campain201806 !== undefined) {
+          campain201806["aktion"] = "Juni 2018";
+          this.tchartData.push(campain201806);
+        }
+        //if (campain201808 !== undefined) {
+        //  campain201808["aktion"] = "August 2018";
+        //  this.tchartData.push(campain201808);
+        //}
+        this.actualCampain["aktion"] = this.selectedCampain;
+        this.tchartData.push(this.actualCampain);
+        // Strange TauCharts seems to ignore duplicated entries.
+        // Which is a pro, it seems no different case handling is needed.
+      } else if (this.selectedRankingGroup == "TOP5 Lebensräume") {
+        this.tchartData = [];
+        let campain201806Lebensraum = this.juni2018_top5Lebensraeume.find(
+          o => o.name === this.selectedRanking
+        );
+        let campain201806 = campain201806Lebensraum.data.find(
+          o => o.artname === this.artname
+        );
+        if (campain201806 !== undefined) {
+          campain201806["aktion"] = "Juni 2018";
+          this.tchartData.push(campain201806);
+        }
+        this.actualCampain["aktion"] = this.selectedCampain;
+        this.tchartData.push(this.actualCampain);
       }
-      //if (campain201808 !== undefined) {
-      //  campain201808["aktion"] = "August 2018";
-      //  this.tchartData.push(campain201808);
-      //}
-      this.actualCampain["aktion"] = this.selectedCampain;
-      this.tchartData.push(this.actualCampain);
-      // Strange TauCharts seems to ignore duplicated entries.
-      // Which is a pro, it seems no different case handling is needed.
     },
     createTChart: function() {
       var chart = new tauCharts.Chart({
