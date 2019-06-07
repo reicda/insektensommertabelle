@@ -136,7 +136,8 @@ export default {
         { text: "Gattung", value: "gattung" },
         { text: "Taxon", value: "taxon" }
       ],
-      top5Lebensraeume:[],
+      top5Lebensraeume: [],
+      top5Bundeslaender: [],
       beobachtungen: [],
       tableData: [],
       selectedRanking: { name: "Top 100" },
@@ -230,19 +231,40 @@ export default {
   },
   methods: {
     allTop5Lebensraeume() {
-      let top5=[];
+      let top5 = [];
       let top5lebensraeume = this.rankings.filter(
         ranking => ranking.group === "TOP5 Lebensräume"
       );
       for (var value of top5lebensraeume) {
-        if (value.name === "Garten"){
-        top5.push({name:value.name,data:this.top(this.lebensraum(this.beobachtungen, value.name),5)})
-        }else{
-        top5.push({name:value.name,data:this.top(this.lebensraum(this.beobachtungen, " "+value.name),5) })
+        if (value.name === "Garten") {
+          top5.push({
+            name: value.name,
+            data: this.top(this.lebensraum(this.beobachtungen, value.name), 5)
+          });
+        } else {
+          top5.push({
+            name: value.name,
+            data: this.top(
+              this.lebensraum(this.beobachtungen, " " + value.name),
+              5
+            )
+          });
         }
-
       }
-     this.top5Lebensraeume=top5;
+      this.top5Lebensraeume = top5;
+    },
+    allTop5Bundeslaender() {
+      let top5 = [];
+      let bundeslaender= this.rankings.filter(
+        ranking => ranking.group === "TOP5 Bundesländer"
+      );
+      for (var value of bundeslaender) {
+        top5.push({
+          name: value.name,
+          data: this.top(this.bundesland(this.beobachtungen, value.name), 5)
+        });
+      }
+      this.top5Bundeslaender = top5;
     },
     loadData() {
       this.tableData = [];
@@ -343,7 +365,11 @@ export default {
     },
     openTChart: function(props) {
       // TODO: Fix if other rankings are implemented!
-      if (this.selectedRanking.name === "Top 100" || this.selectedRanking.group === "TOP5 Lebensräume") {
+      if (
+        this.selectedRanking.name === "Top 100" ||
+        this.selectedRanking.group === "TOP5 Lebensräume" ||
+        this.selectedRanking.group === "TOP5 Bundesländer"
+      ) {
         props.expanded = !props.expanded;
       }
     },
@@ -362,6 +388,7 @@ export default {
     },
     changeRanking: function(obj) {
       this.tableData = [];
+      this.allTop5Bundeslaender();
       //this.allTop5Lebensraeume();
       if (obj.name === "Top 100") {
         this.loading = true;

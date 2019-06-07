@@ -17,12 +17,14 @@ import "../../node_modules/taucharts/dist/plugins/tooltip.css";
 //import august2018_top100 from "./august2018_top100.js";
 import juni2018_top100 from "./juni2018_top100.js";
 import juni2018_top5Lebensraeume from "./juni2018_top5Lebensraeume";
+import juni2018_top5Bundeslaender from "./juni2018_top5Bundeslaender";
 
 export default {
   data: () => ({
     //august2018_top100: august2018_top100,
     juni2018_top100: juni2018_top100,
     juni2018_top5Lebensraeume: juni2018_top5Lebensraeume,
+    juni2018_top5Bundeslaender: juni2018_top5Bundeslaender,
     selectedCampain: "",
     selectedRanking: "",
     selectedRankingGroup: "",
@@ -71,6 +73,20 @@ export default {
         );
         let campain201806 = campain201806Lebensraum.data.find(
           o => o.artname === this.artname
+        );
+        if (campain201806 !== undefined) {
+          campain201806["aktion"] = "Juni 2018";
+          this.tchartData.push(campain201806);
+        }
+        this.actualCampain["aktion"] = this.selectedCampain;
+        this.tchartData.push(this.actualCampain);
+      } else if (this.selectedRankingGroup !== undefined && this.selectedRankingGroup == "TOP5 Bundesländer") {
+        this.tchartData = [];
+        let campain201806Bundesland= this.juni2018_top5Bundeslaender.find(
+          o => o.name === this.selectedRanking
+        );
+        let campain201806 = campain201806Bundesland.data.find(
+          o => o.name === this.name
         );
         if (campain201806 !== undefined) {
           campain201806["aktion"] = "Juni 2018";
