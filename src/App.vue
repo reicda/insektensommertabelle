@@ -388,7 +388,7 @@ export default {
     },
     changeRanking: function(obj) {
       this.tableData = [];
-      this.allTop5Bundeslaender();
+      //this.allTop5Bundeslaender();
       //this.allTop5Lebensraeume();
       if (obj.name === "Top 100") {
         this.loading = true;
