@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     createData: function() {
-      if (this.selectedRanking == "TOP100") {
+      if (this.selectedRanking == "Top 100") {
         this.tchartData = [];
         let campain201806 = this.juni2018_top100.find(
           o => o.artname === this.artname
@@ -64,7 +64,7 @@ export default {
         this.tchartData.push(this.actualCampain);
         // Strange TauCharts seems to ignore duplicated entries.
         // Which is a pro, it seems no different case handling is needed.
-      } else if (this.selectedRankingGroup == "TOP5 Lebensräume") {
+      } else if (this.selectedRankingGroup !== undefined && this.selectedRankingGroup == "TOP5 Lebensräume") {
         this.tchartData = [];
         let campain201806Lebensraum = this.juni2018_top5Lebensraeume.find(
           o => o.name === this.selectedRanking
