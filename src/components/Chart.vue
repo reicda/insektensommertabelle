@@ -86,7 +86,7 @@ export default {
           o => o.name === this.selectedRanking
         );
         let campain201806 = campain201806Bundesland.data.find(
-          o => o.name === this.name
+          o => o.artname=== this.artname
         );
         if (campain201806 !== undefined) {
           campain201806["aktion"] = "Juni 2018";
