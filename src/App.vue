@@ -123,6 +123,7 @@ export default {
         meldungen: 0
       },
       campains: [
+        { text: "August 2019", value: "2019-08" },
         { text: "Juni 2019", value: "2019-06" },
         { text: "August 2018", value: "2018-08" },
         { text: "Juni 2018", value: "2018-06" }
@@ -141,7 +142,7 @@ export default {
       beobachtungen: [],
       tableData: [],
       selectedRanking: { name: "Top 100" },
-      selectedCampain: { text: "Juni 2019", value: "2019-06" },
+      selectedCampain: { text: "August 2019", value: "2019-08" },
       rankings: [
         { header: "Ranglisten" },
         { name: "Top 100", avatar: "images/brd.svg" },
