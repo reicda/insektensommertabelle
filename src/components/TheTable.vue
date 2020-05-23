@@ -1,6 +1,7 @@
 <template>
   <v-card>
     <TheTableHeader
+      ref="dTheTableHeader"
       @update:selectedCampain="changeCampain"
       @update:selectedRanking="changeRanking" />
 
@@ -12,7 +13,7 @@
     <v-data-table
       ref="dTable"
       :disable-initial-sort="true"
-      :search="search"
+      :search="searchString"
       :headers="headers"
       :items="tableData"
       no-data-text="Keine Daten gefunden."
@@ -57,7 +58,7 @@
         :value="true"
         color="error"
         icon="warning">
-        Leider wurde Dein Suchbegriff "{{ search }}" nicht gefunden.
+        Leider wurde Dein Suchbegriff "{{ searchString }}" nicht gefunden.
       </v-alert>
 
       <template
@@ -87,6 +88,7 @@ export default {
   },
   data() {
     return {
+      searchString: "",
       loading: true,
       footer: {
         beobachtungen: 0,
@@ -106,6 +108,15 @@ export default {
       beobachtungen: [],
       tableData: [],
     };
+  },
+    mounted() {
+    // https://dev.to/rolanddoda/8-secrets-vue-developers-must-know-5la#watch-child-properties-changes-from-parent
+    this.$watch(
+      "$refs.dTheTableHeader.search",
+      (new_value ) => {
+        this.searchString=new_value
+      }
+    );
   },
   methods: {
     changeCampain: function(selectedCampain) {
