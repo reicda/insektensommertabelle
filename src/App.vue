@@ -50,7 +50,7 @@
 
           <v-text-field
             v-model="search"
-            append-icon="search"
+            append-icon="mdi-magnify"
             label="Suche in Tabelle ..."
             single-line
             hide-details />
