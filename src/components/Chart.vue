@@ -1,15 +1,9 @@
 <template>
-  <v-card class="chart-card">
-    <v-layout
-      wrap
-      pa-1>
-      <v-flex xs12>
-        <div
-          :id="'tchart-'+artname"
-          class="tchart" />
-      </v-flex>
-    </v-layout>
-  </v-card>
+  <td :colspan="8">
+    <div
+      :id="'tchart-'+artname"
+      class="tchart" />
+  </td>
 </template>
 
 <script>
@@ -36,30 +30,30 @@ export default {
     august2018_top5Bundeslaender: august2018_top5Bundeslaender,
     selectedCampain: "",
     selectedRanking: "",
-    selectedRankingGroup: "",
     actualCampain: {},
     artname: "",
-    tchartData: []
+    tchartData: [],
+    headersLength: 0
   }),
   mounted() {
-    this.selectedCampain = this.$attrs.value[1].text;
-    this.artname = this.$attrs.value[0].item.artname;
-    this.actualCampain = this.$attrs.value[0].item;
-    this.selectedRanking = this.$attrs.value[2].name;
-    this.selectedRankingGroup = this.$attrs.value[2].group;
+    this.selectedCampain = this.$attrs['selected-campain'];
+    this.selectedRanking = this.$attrs['selected-ranking'];
+    this.artname = this.$attrs.props.item.artname;
+    //this.headersLength = this.$attrs.props.headers.length;
 
     this.createData();
     this.$nextTick(() => {
       this.createTChart();
+      console.log("tick")
     });
   },
   methods: {
     createData: function() {
-      if (this.selectedRanking == "Top 100") {
+            if (this.selectedRanking.name == "Top 100") {
         this.tchartData = [];
         if (
-          this.selectedCampain == "Juni 2019" ||
-          this.selectedCampain == "Juni 2018"
+          this.selectedCampain == "2019-06" ||
+          this.selectedCampain == "2019-08"
         ) {
           let campain201806 = this.juni2018_top100.find(
             o => o.artname === this.artname
@@ -154,6 +148,7 @@ export default {
           this.tchartData.push(this.actualCampain);
         }
       }
+
     },
     createTChart: function() {
       var chart = new tauCharts.Chart({
@@ -178,10 +173,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.tchart {
-  height: 25em;
-  width: 50%;
-}
-</style>

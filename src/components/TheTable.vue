@@ -12,15 +12,16 @@
 
     <v-data-table
       ref="dTable"
-      :disable-initial-sort="true"
       :search="searchString"
       :headers="headers"
       :items="tableData"
       no-data-text="Keine Daten gefunden."
-      hide-actions
       item-key="artname"
       :loading="loading"
-      class="elevation-1">
+      class="elevation-1"
+      show-expand
+      items-per-page="100"
+      hide-default-footer>
       <template
         slot="items"
         slot-scope="props">
@@ -47,10 +48,12 @@
         </tr>
       </template>
 
-      <template v-slot:expand="props">
+      <template
+        v-slot:expanded-item="props">
         <Chart
           :props="props"
-          :value="[props,selectedCampain,selectedRanking]" />
+          :selected-ranking="selectedRanking"
+          :selected-campain="selectedCampain" />
       </template>
 
       <v-alert
@@ -88,6 +91,8 @@ export default {
   },
   data() {
     return {
+      selectedCampain: "",
+      selectedRanking: "",
       searchString: "",
       loading: true,
       footer: {
@@ -128,9 +133,11 @@ export default {
       this.tableData = [];
       this.footer.meldungen = 0;
       this.footer.beobachtungen = 0;
+      this.selectedCampain=selectedCampain.value
       this.loadData(selectedCampain.value);
     },
     changeRanking: function(selectedRanking) {
+      this.selectedRanking=selectedRanking
       console.log(selectedRanking)
       this.tableData = [];
       //this.allTop5Bundeslaender();
@@ -302,6 +309,7 @@ export default {
       return beobachtungenBundesland;
     },
     openTChart: function(props) {
+      console.log(props)
       // TODO: Fix if other rankings are implemented!
       if (
         this.selectedRanking.name === "Top 100" ||
