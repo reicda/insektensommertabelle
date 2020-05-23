@@ -1,9 +1,12 @@
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import Vue from 'vue'
-import './plugins/vuetify'
 import App from './App.vue'
+import vuetify from './plugins/vuetify';
 
-Vue.config.productionTip = true
+Vue.config.productionTip = false
 
 new Vue({
-  render: h => h(App),
+  vuetify,
+  render: h => h(App)
 }).$mount('#app')
