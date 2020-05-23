@@ -1,8 +1,12 @@
 <template>
   <v-card class="chart-card">
-    <v-layout wrap pa-1>
+    <v-layout
+      wrap
+      pa-1>
       <v-flex xs12>
-        <div :id="'tchart-'+artname" class="tchart"></div>
+        <div
+          :id="'tchart-'+artname"
+          class="tchart" />
       </v-flex>
     </v-layout>
   </v-card>

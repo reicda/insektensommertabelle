@@ -4,59 +4,63 @@
       <v-card>
         <v-card-title>
           <v-select
-            @change="changedAction"
-            :items="campains"
             v-model="selectedCampain"
+            :items="campains"
             label="Aktion"
             class="mr-3"
-          ></v-select>
+            @change="changedAction" />
 
           <v-autocomplete
-            @change="changeRanking"
+            v-model="selectedRanking"
             :items="rankings"
             :menu-props="{maxHeight:'700'}"
-            v-model="selectedRanking"
             label="Rangliste"
             item-text="name"
             item-value="name"
             :hint="`${selectedRanking.group?selectedRanking.group:''}`"
             return-object
-          >
-            <template slot="item" slot-scope="data">
+            @change="changeRanking">
+            <template
+              slot="item"
+              slot-scope="data">
               <template
+                v-if="typeof data.item !== 'object'"
                 id="scroll-target"
                 style="max-height: 400px"
-                class="scroll-y"
-                v-if="typeof data.item !== 'object'"
-              >
-                <v-list-tile-content v-text="data.item"></v-list-tile-content>
+                class="scroll-y">
+                <v-list-tile-content v-text="data.item" />
               </template>
               <template v-else>
-                <v-list-tile-avatar :tile="true" v-if="data.item.avatar">
+                <v-list-tile-avatar
+                  v-if="data.item.avatar"
+                  :tile="true">
                   <img :src="data.item.avatar">
                 </v-list-tile-avatar>
                 <v-list-tile-content>
-                  <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+                  <v-list-tile-title v-html="data.item.name" />
                   <!--v-list-tile-sub-title v-html="data.item.group"></v-list-tile-sub-title-->
                 </v-list-tile-content>
               </template>
             </template>
           </v-autocomplete>
 
-          <v-spacer></v-spacer>
+          <v-spacer />
 
           <v-text-field
             v-model="search"
             append-icon="search"
             label="Suche in Tabelle ..."
             single-line
-            hide-details
-          ></v-text-field>
+            hide-details />
         </v-card-title>
 
-        <v-progress-linear slot="progress" color="blue" indeterminate="true"></v-progress-linear>
+        <v-progress-linear
+          slot="progress"
+          color="blue"
+          indeterminate="true" />
 
         <v-data-table
+          ref="dTable"
           :disable-initial-sort="true"
           :search="search"
           :headers="headers"
@@ -65,38 +69,56 @@
           hide-actions
           item-key="artname"
           :loading="loading"
-          class="elevation-1"
-          ref="dTable"
-        >
-          <template slot="items" slot-scope="props">
+          class="elevation-1">
+          <template
+            slot="items"
+            slot-scope="props">
             <tr @click="openTChart(props)">
-              <td>{{ props.item.rang}}</td>
-              <td class="text-xs-left">{{ props.item.artname}}</td>
-              <td class="text-xs-left">{{ props.item.meldungen}}</td>
-              <td class="text-xs-left">{{ props.item.anzahl}}</td>
-              <td class="text-xs-left">{{ props.item.durchschnitt}}</td>
-              <td class="text-xs-left">{{ props.item.gattung}}</td>
-              <td class="text-xs-left">{{ props.item.taxon}}</td>
+              <td>{{ props.item.rang }}</td>
+              <td class="text-xs-left">
+                {{ props.item.artname }}
+              </td>
+              <td class="text-xs-left">
+                {{ props.item.meldungen }}
+              </td>
+              <td class="text-xs-left">
+                {{ props.item.anzahl }}
+              </td>
+              <td class="text-xs-left">
+                {{ props.item.durchschnitt }}
+              </td>
+              <td class="text-xs-left">
+                {{ props.item.gattung }}
+              </td>
+              <td class="text-xs-left">
+                {{ props.item.taxon }}
+              </td>
             </tr>
           </template>
 
           <template v-slot:expand="props">
-            <Chart :props="props" :value="[props,selectedCampain,selectedRanking]"></Chart>
+            <Chart
+              :props="props"
+              :value="[props,selectedCampain,selectedRanking]" />
           </template>
 
           <v-alert
             slot="no-results"
             :value="true"
             color="error"
-            icon="warning"
-          >Leider wurde Dein Suchbegriff "{{ search }}" nicht gefunden.</v-alert>
+            icon="warning">
+            Leider wurde Dein Suchbegriff "{{ search }}" nicht gefunden.
+          </v-alert>
 
-          <template slot="footer" :items="footer" v-if="footer">
+          <template
+            v-if="footer"
+            slot="footer"
+            :items="footer">
             <td colspan="100%">
               Anzahl Meldungen (insgesamt):
-              <strong>{{footer.meldungen}}</strong>
+              <strong>{{ footer.meldungen }}</strong>
               <br>Anzahl Beobachtungen (ingesamt):
-              <strong>{{footer.beobachtungen}}</strong>
+              <strong>{{ footer.beobachtungen }}</strong>
             </td>
           </template>
         </v-data-table>
@@ -110,7 +132,7 @@ import Chart from "./components/Chart";
 import Papa from "papaparse";
 
 export default {
-  name: "app",
+  name: "App",
   components: {
     Chart
   },
