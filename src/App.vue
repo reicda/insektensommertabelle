@@ -28,18 +28,20 @@
                 id="scroll-target"
                 style="max-height: 400px"
                 class="scroll-y">
-                <v-list-tile-content v-text="data.item" />
+                <v-list-item-content v-text="data.item" />
               </template>
               <template v-else>
-                <v-list-tile-avatar
+                <v-list-item-avatar
                   v-if="data.item.avatar"
                   :tile="true">
-                  <img :src="data.item.avatar">
-                </v-list-tile-avatar>
-                <v-list-tile-content>
-                  <v-list-tile-title v-html="data.item.name" />
-                  <!--v-list-tile-sub-title v-html="data.item.group"></v-list-tile-sub-title-->
-                </v-list-tile-content>
+                  <img
+                    alt="Flaggen der Bundeslaender"
+                    :src="data.item.avatar">
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-html="data.item.name" />
+                  <!--v-list-item-sub-title v-html="data.item.group"></v-list-item-sub-title-->
+                </v-list-item-content>
               </template>
             </template>
           </v-autocomplete>
