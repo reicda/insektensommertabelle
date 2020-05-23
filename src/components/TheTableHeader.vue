@@ -153,6 +153,7 @@ export default {
       this.selectedCampain = this.campains.find(o => o.value == param);
     }
     this.notifyCampainChange()
+    this.notifyRankingChange()
   },
   methods: {
     notifyCampainChange() {
