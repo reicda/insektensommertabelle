@@ -25,7 +25,7 @@
       <template
         slot="items"
         slot-scope="props">
-        <tr @click="openTChart(props)">
+        <tr>
           <td>{{ props.item.rang }}</td>
           <td class="text-xs-left">
             {{ props.item.artname }}
