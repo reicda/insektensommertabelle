@@ -20,7 +20,7 @@
       :loading="loading"
       class="elevation-1"
       show-expand
-      items-per-page="100"
+      :items-per-page="100"
       hide-default-footer>
       <template
         slot="items"
