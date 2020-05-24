@@ -206,7 +206,7 @@ export default {
             name: value.name,
             data: this.top(
               this.lebensraum(this.beobachtungen, " " + value.name),
-              5
+              number
             )
           });
         }
