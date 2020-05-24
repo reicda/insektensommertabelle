@@ -138,7 +138,6 @@ export default {
     },
     changeRanking: function(selectedRanking) {
       this.selectedRanking=selectedRanking
-      console.log(selectedRanking)
       this.tableData = [];
       //this.allTop5Bundeslaender();
       //this.allTop5Lebensraeume();
