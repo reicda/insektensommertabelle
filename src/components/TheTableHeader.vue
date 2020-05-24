@@ -67,11 +67,11 @@ export default {
         { text: "August 2018", value: "2018-08" },
         { text: "Juni 2018", value: "2018-06" }
       ],
-      selectedRanking: { name: "Top 100" },
-      selectedCampain: { text: "August 2019", value: "2019-08" },
+      selectedRanking: {},
+      selectedCampain: {},
       rankings: [
         { header: "Ranglisten" },
-        { name: "Top 100", avatar: "images/brd.svg" },
+        { name: "Top 100", group: "Top 100" , avatar: "images/brd.svg" },
         { divider: true },
         { header: "TOP5 Bundesländer" },
         {
@@ -151,7 +151,10 @@ export default {
     if (searchParams.has("campain")) {
       param = searchParams.get("campain");
       this.selectedCampain = this.campains.find(o => o.value == param);
+    } else {
+      this.selectedCampain = this.campains[0]
     }
+    this.selectedRanking = this.rankings.find(o => o.group === "Top 100")
     this.notifyCampainChange()
     this.notifyRankingChange()
   },
