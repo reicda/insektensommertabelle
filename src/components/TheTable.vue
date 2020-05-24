@@ -141,7 +141,7 @@ export default {
       this.tableData = [];
       //this.allTop5Bundeslaender();
       //this.allTop5Lebensraeume();
-      if (selectedRanking.name === "Top 100") {
+      if (selectedRanking.group === "Top 100") {
         this.loading = true;
         this.tableData = this.top(this.beobachtungen, 100);
         this.footer.beobachtungen = this.beobachtungen.length;
@@ -155,18 +155,20 @@ export default {
           );
           this.tableData = this.top(beobachtungenLebensraum, 5);
         } else {
+          // Attention! In the original data a space is prefixed.
+          // Except for "Garten".
           let beobachtungenLebensraum = this.lebensraum(
             this.beobachtungen,
             " " + selectedRanking.name
           );
           this.tableData = this.top(beobachtungenLebensraum, 5);
         }
-      } else if (selectedRanking.group === "TOP5 Bundesländer") {
+      } else if (selectedRanking.group === "TOP100 Bundesländer") {
         let beobachtungenBundesland = this.bundesland(
           this.beobachtungen,
           selectedRanking.name
         );
-        this.tableData = this.top(beobachtungenBundesland, 5);
+        this.tableData = this.top(beobachtungenBundesland, 100);
       }
       //close all expanded slots
       for (let i = 0; i < this.tableData.length; i += 1) {

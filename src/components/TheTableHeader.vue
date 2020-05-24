@@ -77,84 +77,84 @@ export default {
           avatar: "images/brd.svg"
         },
         { divider: true },
-        { header: "TOP5 Bundesländer" },
+        { header: "TOP100 Bundesländer" },
         {
           name: "Baden-Württemberg",
           avatar: "images/bw.svg",
-          group: "TOP5 Bundesländer",
-          value: "top5Bundeslaender"
+          group: "TOP100 Bundesländer",
+          value: "top100Bundeslaender"
         },
         {
           name: "Bayern",
           avatar: "images/by.svg",
-          group: "TOP5 Bundesländer",
-          value: "top5Bundeslaender"
+          group: "TOP100 Bundesländer",
+          value: "top100Bundeslaender"
         },
         {
           name: "Brandenburg & Berlin",
           avatar: "images/bb_be.svg",
-          group: "TOP5 Bundesländer",
-          value: "top5Bundeslaender"
+          group: "TOP100 Bundesländer",
+          value: "top100Bundeslaender"
         },
         {
           name: "Hessen",
           avatar: "images/he.svg",
-          group: "TOP5 Bundesländer",
-          value: "top5Bundeslaender"
+          group: "TOP100 Bundesländer",
+          value: "top100Bundeslaender"
         },
         {
           name: "Mecklenburg-Vorpommern",
           avatar: "images/mv.svg",
-          group: "TOP5 Bundesländer",
-          value: "top5Bundeslaender"
+          group: "TOP100 Bundesländer",
+          value: "top100Bundeslaender"
         },
         {
           name: "Niedersachsen & Bremen",
           avatar: "images/ni_hb.svg",
-          group: "TOP5 Bundesländer",
-          value: "top5Bundeslaender"
+          group: "TOP100 Bundesländer",
+          value: "top100Bundeslaender"
         },
         {
           name: "Nordrhein-Westfalen",
           avatar: "images/nw.svg",
-          group: "TOP5 Bundesländer",
-          value: "top5Bundeslaender"
+          group: "TOP100 Bundesländer",
+          value: "top100Bundeslaender"
         },
         {
           name: "Rheinland-Pfalz",
           avatar: "images/rp.svg",
-          group: "TOP5 Bundesländer",
-          value: "top5Bundeslaender"
+          group: "TOP100 Bundesländer",
+          value: "top100Bundeslaender"
         },
         {
           name: "Saarland",
           avatar: "images/sl.svg",
-          group: "TOP5 Bundesländer",
-          value: "top5Bundeslaender"
+          group: "TOP100 Bundesländer",
+          value: "top100Bundeslaender"
         },
         {
           name: "Sachsen",
           avatar: "images/sn.svg",
-          group: "TOP5 Bundesländer",
-          value: "top5Bundeslaender"
+          group: "TOP100 Bundesländer",
+          value: "top100Bundeslaender"
         },
         {
           name: "Sachsen-Anhalt",
           avatar: "images/st.svg",
-          group: "TOP5 Bundesländer",
-          value: "top5Bundeslaender"
+          group: "TOP100 Bundesländer",
+          value: "top100Bundeslaender"
         },
         {
           name: "Schleswig-Holstein & Hamburg",
           avatar: "images/sh_hh.svg",
-          group: "TOP5 Bundesländer",
-          value: "top5Bundeslaender"
+          group: "TOP100 Bundesländer",
+          value: "top100Bundeslaender"
         },
         {
           name: "Thüringen",
           avatar: "images/th.svg",
-          group: "TOP5 Bundesländer",
-          value: "top5Bundeslaender"
+          group: "TOP100 Bundesländer",
+          value: "top100Bundeslaender"
         },
         { divider: true },
         { header: "TOP5 Lebensräume" },
