@@ -31,6 +31,7 @@ export default {
     august2018_top5Bundeslaender: august2018_top5Bundeslaender,
     selectedCampain: "",
     selectedRanking: "",
+    selectedInsect: {},
     past_top100: [],
     past_top5Lebensraeume: [],
     past_top5Bundeslaender: [],
@@ -58,54 +59,66 @@ export default {
     this.artname = this.$attrs.props.item.artname;
     this.selectedInsect = this.$attrs.props.item;
 
-    this.createData();
+    this.createChart();
     this.$nextTick(() => {
-      this.createTChart();
+      this.renderTChart();
       console.log("tick");
     });
   },
   methods: {
-    createData: function() {
+    createChart: function() {
       this.tchartData = [];
-      this.selectedInsect.aktion = this.selectedCampain.text;
-      this.tchartData.push(this.selectedInsect);
 
-      const group = this.selectedRanking.group;
+      // prepare data for selection (selected insect) for chart
+      let insect = this.selectedInsect;
+      insect.aktion = this.selectedCampain.text;
+      this.tchartData.push(insect);
+
+      const group = this.selectedRanking.value;
+      console.log(group);
 
       var month_index = this.selectedCampain.value.slice(-2);
-
-      console.log(month_index);
+      let tcd = this.tchartData;
 
       switch (group) {
-        case "Top 100": {
-          console.log("Top 100");
-          let comparable = this.past_top100.filter(
-            o => o.aktion.value.slice(-2) === month_index
-          );
-          console.log(comparable);
-          let insect = this.selectedInsect;
-          let tcd = this.tchartData;
-          comparable.forEach(function(o) {
-            console.log(o);
-
-            let find = o.top100.find(o => o.name === insect.name);
-            console.log(find);
-            find.aktion = o.aktion.text;
-            tcd.push(find);
-          });
+        case "top100": {
+          this.prepareData(this.past_top100, group, insect, tcd, month_index);
           break;
         }
-        case "TOP5 Bundesländer":
-          console.log("TOP5 Bundesländer");
+        case "top5Bundeslaender":
+          this.prepareData(
+            this.past_top5_bundeslaender,
+            group,
+            insect,
+            tcd,
+            month_index
+          );
           break;
-        case "TOP5 Lebensräume":
-          console.log("TOP5 Lebensräume");
+        case "top5Lebensraeume":
+          this.prepareData(
+            this.past_top5_lebensraeume,
+            group,
+            insect,
+            tcd,
+            month_index
+          );
           break;
         default:
           console.log("default");
       }
     },
-    createTChart: function() {
+    prepareData: function(input, group, insect, tcd, month_index) {
+      console.log(group);
+      let filteredItems = input.filter(
+        o => o.aktion.value.slice(-2) === month_index
+      );
+      filteredItems.forEach(function(o) {
+        let found = o[group].find(o => o.name === insect.name);
+        found.aktion = o.aktion.text;
+        tcd.push(found);
+      });
+    },
+    renderTChart: function() {
       var chart = new tauCharts.Chart({
         plugins: [tp()],
         guide: {
