@@ -68,8 +68,6 @@ export default {
 
       // prepare data for selection (selected insect) for chart
       let insect = this.selectedInsect;
-      insect.aktion = this.selectedCampain.text;
-      this.tchartData.push(insect);
 
       const group = this.selectedRanking.value;
 
@@ -102,6 +100,9 @@ export default {
         default:
           console.log("default");
       }
+      // Create actual insect as last
+      insect.aktion = this.selectedCampain.text;
+      this.tchartData.push(insect);
     },
     prepareData: function(input, ranking, insect, tcd, month_index) {
 
