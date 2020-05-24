@@ -18,26 +18,37 @@ import juni2018_top5Bundeslaender from "./juni2018_top5Bundeslaender";
 import august2018_top100 from "./august2018_top100.js";
 import august2018_top5Lebensraeume from "./august2018_top5Lebensraeume";
 import august2018_top5Bundeslaender from "./august2018_top5Bundeslaender";
+import august2020_top100 from "./august2020_top100.js";
 
 export default {
   data: () => ({
-    //august2018_top100: august2018_top100,
     juni2018_top100: juni2018_top100,
     juni2018_top5Lebensraeume: juni2018_top5Lebensraeume,
     juni2018_top5Bundeslaender: juni2018_top5Bundeslaender,
     august2018_top100: august2018_top100,
+    august2020_top100: august2020_top100,
     august2018_top5Lebensraeume: august2018_top5Lebensraeume,
     august2018_top5Bundeslaender: august2018_top5Bundeslaender,
     selectedCampain: "",
     selectedRanking: "",
-    actualCampain: {},
+    past_top100: [],
+    past_top5Lebensraeume: [],
+    past_top5Bundeslaender: [],
     artname: "",
     tchartData: [],
   }),
+  created() {
+      this.past_top100.push({"aktion": {"text": "Juni 2018", "value": "2018-06"}, "top100": this.juni2018_top100})
+      this.past_top100.push({"aktion": {"text": "August 2018", "value": "2018-08"}, "top100": this.august2018_top100})
+      this.past_top100.push({"aktion": {"text": "August 2020", "value": "2020-08"}, "top100": this.august2020_top100})
+      console.log(this.past_top100)
+
+  },
   mounted() {
     this.selectedCampain = this.$attrs['selected-campain'];
     this.selectedRanking = this.$attrs['selected-ranking'];
     this.artname = this.$attrs.props.item.artname;
+    this.selectedInsect = this.$attrs.props.item;
 
     this.createData();
     this.$nextTick(() => {
@@ -47,104 +58,48 @@ export default {
   },
   methods: {
     createData: function() {
-            if (this.selectedRanking.name == "Top 100") {
-        this.tchartData = [];
-        if (
-          this.selectedCampain == "2019-06" ||
-          this.selectedCampain == "2019-08"
-        ) {
-          let campain201806 = this.juni2018_top100.find(
-            o => o.artname === this.artname
-          );
-          if (campain201806 !== undefined) {
-            campain201806["aktion"] = "Juni 2018";
-            this.tchartData.push(campain201806);
+
+
+      this.tchartData = [];
+      this.selectedInsect.aktion=this.selectedCampain.text
+      this.tchartData.push(this.selectedInsect);
+
+      const group = this.selectedRanking.group
+
+      var month_index =  this.selectedCampain.value.slice(-2)
+
+
+      console.log(month_index)
+
+      switch (group) {
+        case "Top 100": {
+          console.log("Top 100")
+          let comparable = this.past_top100.filter(o => o.aktion.value.slice(-2) === month_index)
+          console.log(comparable)
+          let insect=this.selectedInsect
+          let tcd = this.tchartData
+          comparable.forEach(function(o){
+            console.log(o)
+
+          let find = o.top100.find(o=>o.name === insect.name)
+          console.log(find)
+          find.aktion=o.aktion.text
+          tcd.push(find)
+
+
           }
-          this.actualCampain["aktion"] = this.selectedCampain;
-          this.tchartData.push(this.actualCampain);
-        } else {
-          let campain201808 = this.august2018_top100.find(
-            o => o.artname === this.artname
-          );
-          if (campain201808 !== undefined) {
-            campain201808["aktion"] = "August 2018";
-            this.tchartData.push(campain201808);
-          }
-          this.actualCampain["aktion"] = this.selectedCampain;
-          this.tchartData.push(this.actualCampain);
+
+          )
+          break
         }
-        // Strange TauCharts seems to ignore duplicated entries.
-        // Which is a pro, it seems no different case handling is needed.
-      } else if (
-        this.selectedRankingGroup !== undefined &&
-        this.selectedRankingGroup == "TOP5 Lebensräume"
-      ) {
-        this.tchartData = [];
-        if (
-          this.selectedCampain == "Juni 2019" ||
-          this.selectedCampain == "Juni 2018"
-        ) {
-          let campain201806Lebensraum = this.juni2018_top5Lebensraeume.find(
-            o => o.name === this.selectedRanking
-          );
-          let campain201806 = campain201806Lebensraum.data.find(
-            o => o.artname === this.artname
-          );
-          if (campain201806 !== undefined) {
-            campain201806["aktion"] = "Juni 2018";
-            this.tchartData.push(campain201806);
-          }
-          this.actualCampain["aktion"] = this.selectedCampain;
-          this.tchartData.push(this.actualCampain);
-        } else {
-          let campain201808Lebensraum = this.august2018_top5Lebensraeume.find(
-            o => o.name === this.selectedRanking
-          );
-          let campain201808 = campain201808Lebensraum.data.find(
-            o => o.artname === this.artname
-          );
-          if (campain201808 !== undefined) {
-            campain201808["aktion"] = "August 2018";
-            this.tchartData.push(campain201808);
-          }
-          this.actualCampain["aktion"] = this.selectedCampain;
-          this.tchartData.push(this.actualCampain);
-        }
-      } else if (
-        this.selectedRankingGroup !== undefined &&
-        this.selectedRankingGroup == "TOP5 Bundesländer"
-      ) {
-        this.tchartData = [];
-        if (
-          this.selectedCampain == "Juni 2019" ||
-          this.selectedCampain == "Juni 2018"
-        ) {
-          let campain201806Bundesland = this.juni2018_top5Bundeslaender.find(
-            o => o.name === this.selectedRanking
-          );
-          let campain201806 = campain201806Bundesland.data.find(
-            o => o.artname === this.artname
-          );
-          if (campain201806 !== undefined) {
-            campain201806["aktion"] = "Juni 2018";
-            this.tchartData.push(campain201806);
-          }
-          this.actualCampain["aktion"] = this.selectedCampain;
-          this.tchartData.push(this.actualCampain);
-        } else {
-          let campain201808Bundesland = this.august2018_top5Bundeslaender.find(
-            o => o.name === this.selectedRanking
-          );
-          let campain201808 = campain201808Bundesland.data.find(
-            o => o.artname === this.artname
-          );
-          if (campain201808 !== undefined) {
-            campain201808["aktion"] = "August 2018";
-            this.tchartData.push(campain201808);
-          }
-          this.actualCampain["aktion"] = this.selectedCampain;
-          this.tchartData.push(this.actualCampain);
-        }
+        case "TOP5 Bundesländer":
+          console.log("TOP5 Bundesländer")
+          break
+        case "TOP5 Lebensräume":
+          console.log("TOP5 Lebensräume")
+          break
+        default:
+          console.log("default")
       }
 
     },
