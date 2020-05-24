@@ -211,7 +211,7 @@ export default {
           });
         }
       }
-      this.topAllLebensraeume = top;
+      this.topAllLebensraeume = { aktion: this.selectedCampain, top5Lebensraeume: top};
     },
     allTopBundeslaender(nummer) {
       let top = [];
@@ -224,7 +224,7 @@ export default {
           data: this.top(this.bundesland(this.beobachtungen, value.name), nummer)
         });
       }
-      this.topAllBundeslaender = top;
+      this.topAllBundeslaender = { aktion: this.selectedCampain, top100Bundeslaender: top};
     },
     loadData(selectedCampain) {
       this.tableData = [];
