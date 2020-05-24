@@ -122,9 +122,9 @@ export default {
   methods: {
     changeCampain: function(selectedCampain) {
       //close all expanded slots
-      for (let i = 0; i < this.tableData.length; i += 1) {
-        const item = this.tableData[i];
-        this.$set(this.$refs.dTable.expanded, item.artname, false);
+      //close all expanded slots
+      if (this.$refs.dTable !== undefined){
+      this.$refs.dTable.expansion=false;
       }
       this.tableData = [];
       this.footer.meldungen = 0;
