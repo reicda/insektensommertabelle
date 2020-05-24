@@ -48,8 +48,7 @@
         </tr>
       </template>
 
-      <template
-        v-slot:expanded-item="props">
+      <template v-slot:expanded-item="props">
         <Chart
           :props="props"
           :selected-ranking="selectedRanking"
@@ -111,17 +110,14 @@ export default {
       top5Lebensraeume: [],
       top5Bundeslaender: [],
       beobachtungen: [],
-      tableData: [],
+      tableData: []
     };
   },
-    mounted() {
+  mounted() {
     // https://dev.to/rolanddoda/8-secrets-vue-developers-must-know-5la#watch-child-properties-changes-from-parent
-    this.$watch(
-      "$refs.dTheTableHeader.search",
-      (new_value ) => {
-        this.searchString=new_value
-      }
-    );
+    this.$watch("$refs.dTheTableHeader.search", new_value => {
+      this.searchString = new_value;
+    });
   },
   methods: {
     changeCampain: function(selectedCampain) {
@@ -133,11 +129,10 @@ export default {
       this.tableData = [];
       this.footer.meldungen = 0;
       this.footer.beobachtungen = 0;
-      this.selectedCampain=selectedCampain
+      this.selectedCampain = selectedCampain;
       this.loadData(selectedCampain.value);
     },
     changeRanking: function(selectedRanking) {
-
       this.selectedRanking = selectedRanking;
 
       //close all expanded slots
@@ -146,6 +141,8 @@ export default {
         this.$set(this.$refs.dTable.expanded, item.artname, false);
       }
       this.tableData = [];
+      this.footer.beobachtungen = 0;
+      this.footer.meldungen = 0;
 
       let group = selectedRanking.group;
 
@@ -156,6 +153,10 @@ export default {
               this.beobachtungen,
               selectedRanking.name
             );
+            this.footer.beobachtungen = beobachtungenLebensraum.length;
+            this.footer.meldungen = this.anzahlMeldungen(
+              beobachtungenLebensraum
+            );
             this.tableData = this.top(beobachtungenLebensraum, 5);
           } else {
             // Attention! In the original data a space is prefixed.
@@ -163,6 +164,10 @@ export default {
             let beobachtungenLebensraum = this.lebensraum(
               this.beobachtungen,
               " " + selectedRanking.name
+            );
+            this.footer.beobachtungen = beobachtungenLebensraum.length;
+            this.footer.meldungen = this.anzahlMeldungen(
+              beobachtungenLebensraum
             );
             this.tableData = this.top(beobachtungenLebensraum, 5);
           }
@@ -174,9 +179,7 @@ export default {
             selectedRanking.name
           );
           this.footer.beobachtungen = beobachtungenBundesland.length;
-          this.footer.meldungen = this.anzahlMeldungen(
-            beobachtungenBundesland
-          );
+          this.footer.meldungen = this.anzahlMeldungen(beobachtungenBundesland);
           this.tableData = this.top(beobachtungenBundesland, 100);
           break;
         }
@@ -186,7 +189,6 @@ export default {
           this.footer.meldungen = this.anzahlMeldungen(this.beobachtungen);
         }
       }
-
     },
     allTop5Lebensraeume() {
       let top5 = [];
@@ -213,7 +215,7 @@ export default {
     },
     allTop5Bundeslaender() {
       let top5 = [];
-      let bundeslaender= this.rankings.filter(
+      let bundeslaender = this.rankings.filter(
         ranking => ranking.group === "TOP5 Bundesländer"
       );
       for (var value of bundeslaender) {
@@ -231,7 +233,7 @@ export default {
       //fetch("/data/beobachtungen-" + this.selectedCampain.value + ".csv")
       fetch(
         "https://karten.nabu.de/insektensommer/data/beobachtungen-" +
-          selectedCampain+
+          selectedCampain +
           ".csv",
         {
           method: "GET",
@@ -309,20 +311,16 @@ export default {
       const beobachtungenLebensraum = beobachtungen.filter(
         beobachtung => beobachtung.lebensraum === lebensraum
       );
-      this.footer.beobachtungen = beobachtungenLebensraum.length;
-      this.footer.meldungen = this.anzahlMeldungen(beobachtungenLebensraum);
       return beobachtungenLebensraum;
     },
     bundesland(beobachtungen, bundesland) {
       const beobachtungenBundesland = beobachtungen.filter(
         beobachtung => beobachtung.bundesland === bundesland
       );
-      this.footer.beobachtungen = beobachtungenBundesland.length;
-      this.footer.meldungen = this.anzahlMeldungen(beobachtungenBundesland);
       return beobachtungenBundesland;
     },
     openTChart: function(props) {
-      console.log(props)
+      console.log(props);
       // TODO: Fix if other rankings are implemented!
       if (
         this.selectedRanking.name === "Top 100" ||
