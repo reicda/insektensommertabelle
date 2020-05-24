@@ -137,44 +137,56 @@ export default {
       this.loadData(selectedCampain.value);
     },
     changeRanking: function(selectedRanking) {
-      this.selectedRanking=selectedRanking
-      this.tableData = [];
-      //this.allTop5Bundeslaender();
-      //this.allTop5Lebensraeume();
-      if (selectedRanking.group === "Top 100") {
-        this.loading = true;
-        this.tableData = this.top(this.beobachtungen, 100);
-        this.footer.beobachtungen = this.beobachtungen.length;
-        this.footer.meldungen = this.anzahlMeldungen(this.beobachtungen);
-        this.loading = false;
-      } else if (selectedRanking.group === "TOP5 Lebensräume") {
-        if (selectedRanking.name === "Garten") {
-          let beobachtungenLebensraum = this.lebensraum(
-            this.beobachtungen,
-            selectedRanking.name
-          );
-          this.tableData = this.top(beobachtungenLebensraum, 5);
-        } else {
-          // Attention! In the original data a space is prefixed.
-          // Except for "Garten".
-          let beobachtungenLebensraum = this.lebensraum(
-            this.beobachtungen,
-            " " + selectedRanking.name
-          );
-          this.tableData = this.top(beobachtungenLebensraum, 5);
-        }
-      } else if (selectedRanking.group === "TOP100 Bundesländer") {
-        let beobachtungenBundesland = this.bundesland(
-          this.beobachtungen,
-          selectedRanking.name
-        );
-        this.tableData = this.top(beobachtungenBundesland, 100);
-      }
+
+      this.selectedRanking = selectedRanking;
+
       //close all expanded slots
       for (let i = 0; i < this.tableData.length; i += 1) {
         const item = this.tableData[i];
         this.$set(this.$refs.dTable.expanded, item.artname, false);
       }
+      this.tableData = [];
+
+      let group = selectedRanking.group;
+
+      switch (group) {
+        case "TOP5 Lebensräume": {
+          if (selectedRanking.name === "Garten") {
+            let beobachtungenLebensraum = this.lebensraum(
+              this.beobachtungen,
+              selectedRanking.name
+            );
+            this.tableData = this.top(beobachtungenLebensraum, 5);
+          } else {
+            // Attention! In the original data a space is prefixed.
+            // Except for "Garten".
+            let beobachtungenLebensraum = this.lebensraum(
+              this.beobachtungen,
+              " " + selectedRanking.name
+            );
+            this.tableData = this.top(beobachtungenLebensraum, 5);
+          }
+          break;
+        }
+        case "TOP100 Bundesländer": {
+          let beobachtungenBundesland = this.bundesland(
+            this.beobachtungen,
+            selectedRanking.name
+          );
+          this.footer.beobachtungen = beobachtungenBundesland.length;
+          this.footer.meldungen = this.anzahlMeldungen(
+            beobachtungenBundesland
+          );
+          this.tableData = this.top(beobachtungenBundesland, 100);
+          break;
+        }
+        default: {
+          this.tableData = this.top(this.beobachtungen, 100);
+          this.footer.beobachtungen = this.beobachtungen.length;
+          this.footer.meldungen = this.anzahlMeldungen(this.beobachtungen);
+        }
+      }
+
     },
     allTop5Lebensraeume() {
       let top5 = [];
