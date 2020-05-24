@@ -156,3 +156,10 @@ export default {
   }
 };
 </script>
+
+<style>
+.tchart {
+  height: 25em;
+  width: 100%;
+}
+</style>
