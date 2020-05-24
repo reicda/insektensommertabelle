@@ -136,10 +136,10 @@ export default {
       this.selectedRanking = selectedRanking;
 
       //close all expanded slots
-      for (let i = 0; i < this.tableData.length; i += 1) {
-        const item = this.tableData[i];
-        this.$set(this.$refs.dTable.expanded, item.artname, false);
+      if (this.$refs.dTable !== undefined){
+      this.$refs.dTable.expansion=false;
       }
+
       this.tableData = [];
       this.footer.beobachtungen = 0;
       this.footer.meldungen = 0;
