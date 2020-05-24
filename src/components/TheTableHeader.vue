@@ -201,6 +201,7 @@ export default {
   },
   methods: {
     notifyCampainChange() {
+      this.selectedRanking = this.rankings.find(o => o.group === "Top 100");
       this.$emit("update:selectedCampain", this.selectedCampain);
     },
     notifyRankingChange() {
