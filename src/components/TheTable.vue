@@ -133,7 +133,7 @@ export default {
       this.tableData = [];
       this.footer.meldungen = 0;
       this.footer.beobachtungen = 0;
-      this.selectedCampain=selectedCampain.value
+      this.selectedCampain=selectedCampain
       this.loadData(selectedCampain.value);
     },
     changeRanking: function(selectedRanking) {
