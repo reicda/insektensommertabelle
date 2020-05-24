@@ -33,13 +33,11 @@ export default {
     actualCampain: {},
     artname: "",
     tchartData: [],
-    headersLength: 0
   }),
   mounted() {
     this.selectedCampain = this.$attrs['selected-campain'];
     this.selectedRanking = this.$attrs['selected-ranking'];
     this.artname = this.$attrs.props.item.artname;
-    //this.headersLength = this.$attrs.props.headers.length;
 
     this.createData();
     this.$nextTick(() => {
