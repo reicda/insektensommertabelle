@@ -107,8 +107,8 @@ export default {
         { text: "Gattung", value: "gattung" },
         { text: "Taxon", value: "taxon" }
       ],
-      top5Lebensraeume: [],
-      top5Bundeslaender: [],
+      topAllLebensraeume: [],
+      topAllBundeslaender: [],
       beobachtungen: [],
       tableData: []
     };
@@ -190,19 +190,19 @@ export default {
         }
       }
     },
-    allTop5Lebensraeume() {
-      let top5 = [];
-      let top5lebensraeume = this.rankings.filter(
+    allTopLebensraeume(number) {
+      let top = [];
+      let lebensraeume = this.rankings.filter(
         ranking => ranking.group === "TOP5 Lebensräume"
       );
-      for (var value of top5lebensraeume) {
+      for (var value of lebensraeume) {
         if (value.name === "Garten") {
-          top5.push({
+          top.push({
             name: value.name,
-            data: this.top(this.lebensraum(this.beobachtungen, value.name), 5)
+            data: this.top(this.lebensraum(this.beobachtungen, value.name), number)
           });
         } else {
-          top5.push({
+          top.push({
             name: value.name,
             data: this.top(
               this.lebensraum(this.beobachtungen, " " + value.name),
@@ -211,20 +211,20 @@ export default {
           });
         }
       }
-      this.top5Lebensraeume = top5;
+      this.topAllLebensraeume = top;
     },
-    allTop5Bundeslaender() {
-      let top5 = [];
+    allTopBundeslaender(nummer) {
+      let top = [];
       let bundeslaender = this.rankings.filter(
-        ranking => ranking.group === "TOP5 Bundesländer"
+        ranking => ranking.group === "TOP100 Bundesländer"
       );
       for (var value of bundeslaender) {
-        top5.push({
+        top.push({
           name: value.name,
-          data: this.top(this.bundesland(this.beobachtungen, value.name), 5)
+          data: this.top(this.bundesland(this.beobachtungen, value.name), nummer)
         });
       }
-      this.top5Bundeslaender = top5;
+      this.topAllBundeslaender = top;
     },
     loadData(selectedCampain) {
       this.tableData = [];
