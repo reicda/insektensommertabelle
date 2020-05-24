@@ -8,7 +8,6 @@
       return-object
       @change="notifyCampainChange" />
 
-
     <v-autocomplete
       v-model="selectedRanking"
       :items="rankings"
@@ -71,77 +70,119 @@ export default {
       selectedCampain: {},
       rankings: [
         { header: "Ranglisten" },
-        { name: "Top 100", group: "Top 100" , avatar: "images/brd.svg" },
+        {
+          name: "Top 100",
+          group: "Top 100",
+          value: "top100",
+          avatar: "images/brd.svg"
+        },
         { divider: true },
         { header: "TOP5 Bundesländer" },
         {
           name: "Baden-Württemberg",
           avatar: "images/bw.svg",
-          group: "TOP5 Bundesländer"
+          group: "TOP5 Bundesländer",
+          value: "top5Bundeslaender"
         },
-        { name: "Bayern", avatar: "images/by.svg", group: "TOP5 Bundesländer" },
+        {
+          name: "Bayern",
+          avatar: "images/by.svg",
+          group: "TOP5 Bundesländer",
+          value: "top5Bundeslaender"
+        },
         {
           name: "Brandenburg & Berlin",
           avatar: "images/bb_be.svg",
-          group: "TOP5 Bundesländer"
+          group: "TOP5 Bundesländer",
+          value: "top5Bundeslaender"
         },
-        { name: "Hessen", avatar: "images/he.svg", group: "TOP5 Bundesländer" },
+        {
+          name: "Hessen",
+          avatar: "images/he.svg",
+          group: "TOP5 Bundesländer",
+          value: "top5Bundeslaender"
+        },
         {
           name: "Mecklenburg-Vorpommern",
           avatar: "images/mv.svg",
-          group: "TOP5 Bundesländer"
+          group: "TOP5 Bundesländer",
+          value: "top5Bundeslaender"
         },
         {
           name: "Niedersachsen & Bremen",
           avatar: "images/ni_hb.svg",
-          group: "TOP5 Bundesländer"
+          group: "TOP5 Bundesländer",
+          value: "top5Bundeslaender"
         },
         {
           name: "Nordrhein-Westfalen",
           avatar: "images/nw.svg",
-          group: "TOP5 Bundesländer"
+          group: "TOP5 Bundesländer",
+          value: "top5Bundeslaender"
         },
         {
           name: "Rheinland-Pfalz",
           avatar: "images/rp.svg",
-          group: "TOP5 Bundesländer"
+          group: "TOP5 Bundesländer",
+          value: "top5Bundeslaender"
         },
         {
           name: "Saarland",
           avatar: "images/sl.svg",
-          group: "TOP5 Bundesländer"
+          group: "TOP5 Bundesländer",
+          value: "top5Bundeslaender"
         },
         {
           name: "Sachsen",
           avatar: "images/sn.svg",
-          group: "TOP5 Bundesländer"
+          group: "TOP5 Bundesländer",
+          value: "top5Bundeslaender"
         },
         {
           name: "Sachsen-Anhalt",
           avatar: "images/st.svg",
-          group: "TOP5 Bundesländer"
+          group: "TOP5 Bundesländer",
+          value: "top5Bundeslaender"
         },
         {
           name: "Schleswig-Holstein & Hamburg",
           avatar: "images/sh_hh.svg",
-          group: "TOP5 Bundesländer"
+          group: "TOP5 Bundesländer",
+          value: "top5Bundeslaender"
         },
         {
           name: "Thüringen",
           avatar: "images/th.svg",
-          group: "TOP5 Bundesländer"
+          group: "TOP5 Bundesländer",
+          value: "top5Bundeslaender"
         },
         { divider: true },
         { header: "TOP5 Lebensräume" },
-        { name: "Garten", group: "TOP5 Lebensräume" },
-        { name: "Balkon", group: "TOP5 Lebensräume" },
-        { name: "Park", group: "TOP5 Lebensräume" },
-        { name: "Wiese", group: "TOP5 Lebensräume" },
-        { name: "Wald", group: "TOP5 Lebensräume" },
-        { name: "Feld", group: "TOP5 Lebensräume" },
-        { name: "Teich", group: "TOP5 Lebensräume" },
-        { name: "Bach/Fluss", group: "TOP5 Lebensräume" },
-        { name: "Sonstiges", group: "TOP5 Lebensräume" }
+        {
+          name: "Garten",
+          group: "TOP5 Lebensräume",
+          value: "top5Lebensraeume"
+        },
+        {
+          name: "Balkon",
+          group: "TOP5 Lebensräume",
+          value: "top5Lebensraeume"
+        },
+        { name: "Park", group: "TOP5 Lebensräume", value: "top5Lebensraeume" },
+        { name: "Wiese", group: "TOP5 Lebensräume", value: "top5Lebensraeume" },
+        { name: "Wald", group: "TOP5 Lebensräume", value: "top5Lebensraeume" },
+        { name: "Feld", group: "TOP5 Lebensräume", value: "top5Lebensraeume" },
+        { name: "Teich", group: "TOP5 Lebensräume", value: "top5Lebensraeume" },
+        {
+          name: "Bach/Fluss",
+          group: "TOP5 Lebensräume",
+          value: "top5Lebensraeume"
+        },
+        {
+          name: "Sonstiges",
+          group: "TOP5 Lebensräume",
+          value: "top5Lebensraeume"
+        }
       ]
     };
   },
@@ -152,17 +193,17 @@ export default {
       param = searchParams.get("campain");
       this.selectedCampain = this.campains.find(o => o.value == param);
     } else {
-      this.selectedCampain = this.campains[0]
+      this.selectedCampain = this.campains[0];
     }
-    this.selectedRanking = this.rankings.find(o => o.group === "Top 100")
-    this.notifyCampainChange()
-    this.notifyRankingChange()
+    this.selectedRanking = this.rankings.find(o => o.group === "Top 100");
+    this.notifyCampainChange();
+    this.notifyRankingChange();
   },
   methods: {
     notifyCampainChange() {
       this.$emit("update:selectedCampain", this.selectedCampain);
     },
-    notifyRankingChange(){
+    notifyRankingChange() {
       this.$emit("update:selectedRanking", this.selectedRanking);
     }
   }
