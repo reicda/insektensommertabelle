@@ -12,8 +12,11 @@ import tp from "taucharts/dist/plugins/tooltip";
 
 import "../../node_modules/taucharts/dist/taucharts.css";
 import "../../node_modules/taucharts/dist/plugins/tooltip.css";
-import august2018_top100 from "./august2018_top100.js";
-import juni2018_top100 from "./juni2018_top100.js";
+
+import juni2018_top100 from "./juni2018_top100";
+import august2018_top100 from "./august2018_top100";
+import juni2019_top100 from "./juni2019_top100";
+import august2019_top100 from "./august2019_top100";
 
 import juni2018_top100Bundeslaender from "./juni2018_top100Bundeslaender";
 import august2018_top100Bundeslaender from "./august2018_top100Bundeslaender";
@@ -27,8 +30,6 @@ import august2019_top5Lebensraeume from "./august2019_top5Lebensraeume";
 
 export default {
   data: () => ({
-    juni2018_top100: juni2018_top100,
-    august2018_top100: august2018_top100,
     selectedCampain: "",
     selectedRanking: "",
     selectedInsect: {},
@@ -39,18 +40,16 @@ export default {
     tchartData: []
   }),
   created() {
-    this.past_top100.push({
-      aktion: { text: "Juni 2018", value: "2018-06" },
-      top100: this.juni2018_top100
-    });
-    this.past_top100.push({
-      aktion: { text: "August 2018", value: "2018-08" },
-      top100: this.august2018_top100
-    });
+    this.past_top100.push(juni2018_top100)
+    this.past_top100.push(august2018_top100)
+    this.past_top100.push(juni2019_top100)
+    this.past_top100.push(august2019_top100)
+
     this.past_top100Bundeslaender.push(juni2018_top100Bundeslaender)
     this.past_top100Bundeslaender.push(august2018_top100Bundeslaender)
     this.past_top100Bundeslaender.push(juni2019_top100Bundeslaender)
     this.past_top100Bundeslaender.push(august2019_top100Bundeslaender)
+
     this.past_top5Lebensraeume.push(juni2018_top5Lebensraeume)
     this.past_top5Lebensraeume.push(august2018_top5Lebensraeume)
     this.past_top5Lebensraeume.push(juni2019_top5Lebensraeume)
@@ -119,7 +118,7 @@ export default {
         o => o.aktion.value.slice(-2) === month_index
       );
 
-      if (group === "top100Bundeslaender" && groupName === "Top 100"){
+      if (group === "top100" && groupName === "Top 100"){
       filteredItems.forEach(function(o) {
         let found = o[group].find(o => o.name=== insect.name);
         found.aktion = o.aktion.text;
