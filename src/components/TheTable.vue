@@ -22,37 +22,11 @@
       show-expand
       :items-per-page="100"
       hide-default-footer>
-      <template
-        slot="items"
-        slot-scope="props">
-        <tr>
-          <td>{{ props.item.rang }}</td>
-          <td class="text-xs-left">
-            {{ props.item.artname }}
-          </td>
-          <td class="text-xs-left">
-            {{ props.item.meldungen }}
-          </td>
-          <td class="text-xs-left">
-            {{ props.item.anzahl }}
-          </td>
-          <td class="text-xs-left">
-            {{ props.item.durchschnitt }}
-          </td>
-          <td class="text-xs-left">
-            {{ props.item.gattung }}
-          </td>
-          <td class="text-xs-left">
-            {{ props.item.taxon }}
-          </td>
-        </tr>
-      </template>
-
-      <template v-slot:expanded-item="props">
+      <template v-slot:expanded-item="{ item }">
         <Chart
-          :props="props"
-          :selected-ranking="selectedRanking"
-          :selected-campain="selectedCampain" />
+          :item="item"
+          :ranking="selectedRanking"
+          :campain="selectedCampain" />
       </template>
 
       <v-alert
