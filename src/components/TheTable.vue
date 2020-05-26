@@ -272,6 +272,14 @@ export default {
         .map(JSON.parse);
       return meldungen.length;
     },
+    // helper function
+    allTop(){
+    this.allTop100={
+      aktion: this.selectedCampain,
+      top100: this.tableData
+    };
+
+    },
     top(beobachtungen, slice) {
       // Totaling anzahl and meldungen for unique artname
       const uniqueMap = new Map();
