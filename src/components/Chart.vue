@@ -1,7 +1,7 @@
 <template>
   <td :colspan="8">
     <div
-      :id="'tchart-'+artname"
+      :id="'tchart-'+item.artname"
       class="tchart" />
   </td>
 </template>
@@ -29,14 +29,15 @@ import juni2019_top5Lebensraeume from "./juni2019_top5Lebensraeume";
 import august2019_top5Lebensraeume from "./august2019_top5Lebensraeume";
 
 export default {
+  props: {
+    item: {type: Object, default: ()=>({})},
+    ranking: {type: Object, default: ()=>({})},
+    campain: {type: Object, default: ()=>({})},
+  },
   data: () => ({
-    selectedCampain: "",
-    selectedRanking: "",
-    selectedInsect: {},
     past_top100: [],
     past_top5Lebensraeume: [],
     past_top100Bundeslaender: [],
-    artname: "",
     tchartData: []
   }),
   created() {
@@ -56,10 +57,6 @@ export default {
     this.past_top5Lebensraeume.push(august2019_top5Lebensraeume)
   },
   mounted() {
-    this.selectedCampain = this.$attrs["selected-campain"];
-    this.selectedRanking = this.$attrs["selected-ranking"];
-    this.artname = this.$attrs.props.item.artname;
-    this.selectedInsect = this.$attrs.props.item;
 
     this.createChart();
     this.$nextTick(() => {
@@ -72,22 +69,22 @@ export default {
       this.tchartData = [];
 
       // prepare data for selection (selected insect) for chart
-      let insect = this.selectedInsect;
+      let insect = this.item;
 
-      const group = this.selectedRanking.value;
+      const group = this.ranking.value;
 
-      var month_index = this.selectedCampain.value.slice(-2);
+      var month_index = this.campain.value.slice(-2);
       let tcd = this.tchartData;
 
       switch (group) {
         case "top100": {
-          this.prepareData(this.past_top100, this.selectedRanking, insect, tcd, month_index);
+          this.prepareData(this.past_top100, this.ranking, insect, tcd, month_index);
           break;
         }
         case "top100Bundeslaender":
           this.prepareData(
             this.past_top100Bundeslaender,
-            this.selectedRanking,
+            this.ranking,
             insect,
             tcd,
             month_index
@@ -96,7 +93,7 @@ export default {
         case "top5Lebensraeume":
           this.prepareData(
             this.past_top5Lebensraeume,
-            this.selectedRanking,
+            this.ranking,
             insect,
             tcd,
             month_index
@@ -106,7 +103,7 @@ export default {
           console.log("default");
       }
       // Create actual insect as last
-      insect.aktion = this.selectedCampain.text;
+      insect.aktion = this.campain.text;
       this.tchartData.push(insect);
     },
     prepareData: function(input, ranking, insect, tcd, month_index) {
@@ -158,7 +155,7 @@ export default {
         y: "meldungen",
         color: "aktion"
       });
-      chart.renderTo(document.getElementById("tchart-" + this.artname));
+      chart.renderTo(document.getElementById("tchart-" + this.item.artname));
     }
   }
 };
