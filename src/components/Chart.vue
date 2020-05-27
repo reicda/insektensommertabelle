@@ -71,41 +71,38 @@ export default {
   },
   methods: {
     createChart: function(insect) {
-      // prepare data for selection (selected insect) for chart
-      console.log(insect);
+      const group = this.ranking.value;
 
-      //const group = this.ranking.value;
+      var month_index = this.campain.value.slice(-2);
+      const tcd = [];
 
-      //var month_index = this.campain.value.slice(-2);
-      let tcd = [];
-
-      //switch (group) {
-      //  case "top100": {
-      //    this.prepareData(this.past_top100, this.ranking, insect, tcd, month_index);
-      //    break;
-      //  }
-      //  case "top100Bundeslaender":
-      //    this.prepareData(
-      //      this.past_top100Bundeslaender,
-      //      this.ranking,
-      //      insect,
-      //      tcd,
-      //      month_index
-      //    );
-      //    break;
-      //  case "top5Lebensraeume":
-      //    this.prepareData(
-      //      this.past_top5Lebensraeume,
-      //      this.ranking,
-      //      insect,
-      //      tcd,
-      //      month_index
-      //    );
-      //    break;
-      //  default:
-      //    console.log("default");
-      //}
-      // Create actual insect as last
+      switch (group) {
+        case "top100": {
+          this.prepareData(this.past_top100, this.ranking, insect, tcd, month_index);
+          break;
+        }
+        case "top100Bundeslaender":
+          this.prepareData(
+            this.past_top100Bundeslaender,
+            this.ranking,
+            insect,
+            tcd,
+            month_index
+          );
+          break;
+        case "top5Lebensraeume":
+          this.prepareData(
+            this.past_top5Lebensraeume,
+            this.ranking,
+            insect,
+            tcd,
+            month_index
+          );
+          break;
+        default:
+          console.log("default");
+      }
+       // Create actual insect as last
       insect.aktion = this.campain.text;
       tcd.push(insect);
       this.renderTChart(tcd);
@@ -120,13 +117,13 @@ export default {
 
       if (group === "top100" && groupName === "Top 100") {
         filteredItems.forEach(function(o) {
-          let found = o[group].find(o => o.name === insect.name);
-          found.aktion = o.aktion.text;
-          tcd.push(found);
+          let found = o[group].find(o => o.artname === insect.artname);
+          if (found !== undefined) {
+            found.aktion = o.aktion.text;
+            tcd.push(found);
+          }
         });
       } else {
-        console.log(group);
-        console.log(groupName);
         filteredItems.forEach(function(o) {
           let found = o[group].find(o => o.name === groupName);
           let found2 = found["data"].find(x => x.artname === insect.artname);
