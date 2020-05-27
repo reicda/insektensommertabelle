@@ -15,13 +15,14 @@
       :search="searchString"
       :headers="headers"
       :items="tableData"
+      :expanded="expanded"
       no-data-text="Keine Daten gefunden."
       item-key="artname"
       :loading="loading"
       class="elevation-1"
-      show-expand
       :items-per-page="100"
-      hide-default-footer>
+      hide-default-footer
+      @click:row="openTChart">
       <template v-slot:expanded-item="{ item }">
         <Chart
           :item="item"
@@ -64,6 +65,7 @@ export default {
   },
   data() {
     return {
+      expanded: [],
       selectedCampain: "",
       selectedRanking: "",
       searchString: "",
@@ -301,16 +303,8 @@ export default {
       );
       return beobachtungenBundesland;
     },
-    openTChart: function(props) {
-      console.log(props);
-      // TODO: Fix if other rankings are implemented!
-      if (
-        this.selectedRanking.name === "Top 100" ||
-        this.selectedRanking.group === "TOP5 Lebensräume" ||
-        this.selectedRanking.group === "TOP5 Bundesländer"
-      ) {
-        props.expanded = !props.expanded;
-      }
+    openTChart: function(item) {
+      this.expanded = item === this.expanded[0] ? [] : [item]
     }
   }
 };
