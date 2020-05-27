@@ -1,7 +1,7 @@
 <template>
   <td :colspan="8">
     <div
-      :id="'tchart-'+item.artname"
+      id="tchart"
       class="tchart" />
   </td>
 </template>
@@ -30,115 +30,115 @@ import august2019_top5Lebensraeume from "./august2019_top5Lebensraeume";
 
 export default {
   props: {
-    item: {type: Object, default: ()=>({})},
-    ranking: {type: Object, default: ()=>({})},
-    campain: {type: Object, default: ()=>({})},
+    item: { type: Object, default: () => ({}) },
+    ranking: { type: Object, default: () => ({}) },
+    campain: { type: Object, default: () => ({}) }
   },
   data: () => ({
     past_top100: [],
     past_top5Lebensraeume: [],
-    past_top100Bundeslaender: [],
-    tchartData: []
+    past_top100Bundeslaender: []
   }),
+  watch: {
+    item: function(newVal) {
+      document.getElementById("tchart").innerHTML = "";
+      this.createChart(newVal);
+    }
+  },
   created() {
-    this.past_top100.push(juni2018_top100)
-    this.past_top100.push(august2018_top100)
-    this.past_top100.push(juni2019_top100)
-    this.past_top100.push(august2019_top100)
+    this.past_top100.push(juni2018_top100);
+    this.past_top100.push(august2018_top100);
+    this.past_top100.push(juni2019_top100);
+    this.past_top100.push(august2019_top100);
 
-    this.past_top100Bundeslaender.push(juni2018_top100Bundeslaender)
-    this.past_top100Bundeslaender.push(august2018_top100Bundeslaender)
-    this.past_top100Bundeslaender.push(juni2019_top100Bundeslaender)
-    this.past_top100Bundeslaender.push(august2019_top100Bundeslaender)
+    this.past_top100Bundeslaender.push(juni2018_top100Bundeslaender);
+    this.past_top100Bundeslaender.push(august2018_top100Bundeslaender);
+    this.past_top100Bundeslaender.push(juni2019_top100Bundeslaender);
+    this.past_top100Bundeslaender.push(august2019_top100Bundeslaender);
 
-    this.past_top5Lebensraeume.push(juni2018_top5Lebensraeume)
-    this.past_top5Lebensraeume.push(august2018_top5Lebensraeume)
-    this.past_top5Lebensraeume.push(juni2019_top5Lebensraeume)
-    this.past_top5Lebensraeume.push(august2019_top5Lebensraeume)
+    this.past_top5Lebensraeume.push(juni2018_top5Lebensraeume);
+    this.past_top5Lebensraeume.push(august2018_top5Lebensraeume);
+    this.past_top5Lebensraeume.push(juni2019_top5Lebensraeume);
+    this.past_top5Lebensraeume.push(august2019_top5Lebensraeume);
   },
   mounted() {
-
-    this.createChart();
-    this.$nextTick(() => {
-      this.renderTChart();
-      console.log("tick");
-    });
+    document.getElementById("tchart").innerHTML = "";
+    this.createChart(this.item);
+    //this.$nextTick(() => {
+    //  this.renderTChart();
+    //  console.log("tick");
+    //});
   },
   methods: {
-    createChart: function() {
-      this.tchartData = [];
-
+    createChart: function(insect) {
       // prepare data for selection (selected insect) for chart
-      let insect = this.item;
+      console.log(insect);
 
-      const group = this.ranking.value;
+      //const group = this.ranking.value;
 
-      var month_index = this.campain.value.slice(-2);
-      let tcd = this.tchartData;
+      //var month_index = this.campain.value.slice(-2);
+      let tcd = [];
 
-      switch (group) {
-        case "top100": {
-          this.prepareData(this.past_top100, this.ranking, insect, tcd, month_index);
-          break;
-        }
-        case "top100Bundeslaender":
-          this.prepareData(
-            this.past_top100Bundeslaender,
-            this.ranking,
-            insect,
-            tcd,
-            month_index
-          );
-          break;
-        case "top5Lebensraeume":
-          this.prepareData(
-            this.past_top5Lebensraeume,
-            this.ranking,
-            insect,
-            tcd,
-            month_index
-          );
-          break;
-        default:
-          console.log("default");
-      }
+      //switch (group) {
+      //  case "top100": {
+      //    this.prepareData(this.past_top100, this.ranking, insect, tcd, month_index);
+      //    break;
+      //  }
+      //  case "top100Bundeslaender":
+      //    this.prepareData(
+      //      this.past_top100Bundeslaender,
+      //      this.ranking,
+      //      insect,
+      //      tcd,
+      //      month_index
+      //    );
+      //    break;
+      //  case "top5Lebensraeume":
+      //    this.prepareData(
+      //      this.past_top5Lebensraeume,
+      //      this.ranking,
+      //      insect,
+      //      tcd,
+      //      month_index
+      //    );
+      //    break;
+      //  default:
+      //    console.log("default");
+      //}
       // Create actual insect as last
       insect.aktion = this.campain.text;
-      this.tchartData.push(insect);
+      tcd.push(insect);
+      this.renderTChart(tcd);
     },
     prepareData: function(input, ranking, insect, tcd, month_index) {
-
-      let group = ranking.value
-      let groupName = ranking.name
+      let group = ranking.value;
+      let groupName = ranking.name;
 
       let filteredItems = input.filter(
         o => o.aktion.value.slice(-2) === month_index
       );
 
-      if (group === "top100" && groupName === "Top 100"){
-      filteredItems.forEach(function(o) {
-        let found = o[group].find(o => o.name=== insect.name);
-        found.aktion = o.aktion.text;
-        tcd.push(found);
-
-      });
-      }else{
-        console.log(group)
-        console.log(groupName)
-      filteredItems.forEach(function(o) {
-        let found = o[group].find(o => o.name=== groupName);
-        let found2 = found["data"].find(x=> x.artname === insect.artname)
-        if (found2 !== undefined){
-
-        found2.aktion = o.aktion.text;
-        tcd.push(found2);
-        }
+      if (group === "top100" && groupName === "Top 100") {
+        filteredItems.forEach(function(o) {
+          let found = o[group].find(o => o.name === insect.name);
+          found.aktion = o.aktion.text;
+          tcd.push(found);
         });
-
+      } else {
+        console.log(group);
+        console.log(groupName);
+        filteredItems.forEach(function(o) {
+          let found = o[group].find(o => o.name === groupName);
+          let found2 = found["data"].find(x => x.artname === insect.artname);
+          if (found2 !== undefined) {
+            found2.aktion = o.aktion.text;
+            tcd.push(found2);
+          }
+        });
       }
     },
-    renderTChart: function() {
-      var chart = new tauCharts.Chart({
+    renderTChart: function(tcd) {
+      new tauCharts.Chart({
         plugins: [tp()],
         guide: {
           x: {
@@ -149,13 +149,12 @@ export default {
           },
           showGridLines: "xy"
         },
-        data: this.tchartData,
+        data: tcd,
         type: "bar",
         x: "aktion",
         y: "meldungen",
         color: "aktion"
-      });
-      chart.renderTo(document.getElementById("tchart-" + this.item.artname));
+      }).renderTo(document.getElementById("tchart"));
     }
   }
 };
