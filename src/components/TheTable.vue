@@ -235,7 +235,7 @@ export default {
     anzahlMeldungen(beobachtungen) {
       let latlon = [];
       beobachtungen.forEach(function(beobachtung) {
-        latlon.push([beobachtung.lat, beobachtung.lon]);
+        latlon.push(beobachtung.kopfid);
       });
       // prevent duplicates
       var meldungen = latlon
