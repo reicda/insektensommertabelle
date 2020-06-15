@@ -331,7 +331,7 @@ th.column:nth-child(5) {
 
 #anzahl{
   padding-left: 16px;
-  padding-bottom: 6px;
+  padding-bottom: 16px;
 
 }
 </style>
