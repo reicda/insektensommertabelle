@@ -4,6 +4,16 @@
       ref="dTheTableHeader"
       @update:selectedCampain="changeCampain"
       @update:selectedRanking="changeRanking" />
+    <template
+      v-if="footer"
+      :items="footer">
+      <div id="anzahl">
+        Anzahl Meldungen (insgesamt):
+        <strong>{{ footer.meldungen }}</strong>
+        <br>Anzahl Beobachtungen (ingesamt):
+        <strong>{{ footer.beobachtungen }}</strong>
+      </div>
+    </template>
 
     <v-progress-linear
       slot="progress"
@@ -37,18 +47,6 @@
         icon="warning">
         Leider wurde Dein Suchbegriff "{{ searchString }}" nicht gefunden.
       </v-alert>
-
-      <template
-        v-if="footer"
-        slot="footer"
-        :items="footer">
-        <td colspan="100%">
-          Anzahl Meldungen (insgesamt):
-          <strong>{{ footer.meldungen }}</strong>
-          <br>Anzahl Beobachtungen (ingesamt):
-          <strong>{{ footer.beobachtungen }}</strong>
-        </td>
-      </template>
     </v-data-table>
   </v-card>
 </template>
@@ -329,5 +327,11 @@ tr:hover {
 
 th.column:nth-child(5) {
   white-space: pre-wrap;
+}
+
+#anzahl{
+  padding-left: 16px;
+  padding-bottom: 6px;
+
 }
 </style>
