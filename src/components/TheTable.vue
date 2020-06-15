@@ -33,6 +33,9 @@
       :items-per-page="100"
       hide-default-footer
       @click:row="openTChart">
+      <template #item.full_name="{ item }">
+        {{ item.gattung }} {{ item.taxon }}
+      </template>
       <template v-slot:expanded-item="{ item }">
         <Chart
           :item="item"
@@ -78,8 +81,7 @@ export default {
         { text: "Meldungen", value: "meldungen" },
         { text: "Anzahl", value: "anzahl" },
         { text: "Individuen pro Meldung", value: "durchschnitt" },
-        { text: "Gattung", value: "gattung" },
-        { text: "Taxon", value: "taxon" }
+        { text: "Wissenschaftlicher Name", value: "full_name" }
       ],
       topAllLebensraeume: [],
       topAllBundeslaender: [],
