@@ -61,6 +61,7 @@ export default {
     return {
       search: "",
       campains: [
+        { text: "Juni 2020", value: "2020-06" },
         { text: "August 2019", value: "2019-08" },
         { text: "Juni 2019", value: "2019-06" },
         { text: "August 2018", value: "2018-08" },
