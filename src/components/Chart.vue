@@ -139,17 +139,17 @@ export default {
         plugins: [tp()],
         guide: {
           x: {
-            label: { text: "Aktion" }
+            label: { text: "aktion" }
           },
           y: {
-            label: { text: "Meldungen" }
+            label: { text: "beobachtungen" }
           },
           showGridLines: "xy"
         },
         data: tcd,
         type: "bar",
         x: "aktion",
-        y: "meldungen",
+        y: "beobachtungen",
         color: "aktion"
       }).renderTo(document.getElementById("tchart"));
     }
