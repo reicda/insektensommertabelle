@@ -93,8 +93,11 @@ export default {
         { text: "Individuen pro Beobachtung", value: "durchschnitt" },
         { text: "Wissenschaftlicher Name", value: "full_name" }
       ],
-      topAllLebensraeume: [],
-      topAllBundeslaender: [],
+      //helper for creating comparison data for chart
+      // topAllLebensraeume: [],
+      // topAllBundeslaender: [],
+      // allTop100: [],
+      // TODO: incl. rankings: [] from TheTableHeader.vue
       beobachtungen: [],
       tableData: []
     };
@@ -144,6 +147,8 @@ export default {
               beobachtungenLebensraum
             );
             this.tableData = this.top(beobachtungenLebensraum, 5);
+            // //helper for creating comparison data for chart
+            // this.allTopLebensraeume(5);
           } else {
             // Attention! In the original data a space is prefixed.
             // Except for "Garten".
@@ -167,6 +172,8 @@ export default {
           this.footer.beobachtungen = beobachtungenBundesland.length;
           this.footer.meldungen = this.anzahlMeldungen(beobachtungenBundesland);
           this.tableData = this.top(beobachtungenBundesland, 100);
+          // //helper for creating comparison data for chart
+          // this.allTopBundeslaender(100);
           break;
         }
         default: {
@@ -176,6 +183,7 @@ export default {
         }
       }
     },
+    //helper for creating comparison data for chart
     allTopLebensraeume(number) {
       let top = [];
       let lebensraeume = this.rankings.filter(
@@ -199,6 +207,7 @@ export default {
       }
       this.topAllLebensraeume = { aktion: this.selectedCampain, top5Lebensraeume: top};
     },
+    //helper for creating comparison data for chart
     allTopBundeslaender(nummer) {
       let top = [];
       let bundeslaender = this.rankings.filter(
@@ -236,6 +245,8 @@ export default {
           this.tableData = this.top(this.beobachtungen, 100);
           this.footer.beobachtungen = this.beobachtungen.length;
           this.footer.meldungen = this.anzahlMeldungen(this.beobachtungen);
+          // //helper for creating comparison data for chart
+          // this.allTop();
         })
         .then(() => {
           this.loading = false;
@@ -258,7 +269,7 @@ export default {
         .map(JSON.parse);
       return meldungen.length;
     },
-    // helper function
+    // //helper for creating comparison data for chart
     allTop(){
     this.allTop100={
       aktion: this.selectedCampain,
