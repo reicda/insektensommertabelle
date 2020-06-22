@@ -37,6 +37,7 @@
       :items="tableData"
       :expanded="expanded"
       no-data-text="Keine Daten gefunden."
+      loading-text="Beobachtungen werden geladen ..."
       item-key="artname"
       :loading="loading"
       class="elevation-9"
