@@ -8,7 +8,17 @@
       v-if="footer"
       :items="footer">
       <div id="anzahl">
-        Anzahl Meldungen (insgesamt):
+        Anzahl Meldungen (insgesamt)
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-icon
+              v-bind="attrs"
+              v-on="on">
+              mdi-information-outline
+            </v-icon>
+          </template>
+          <span>Eine Meldung kann mehrere Beobachtungen beinhalten!</span>
+        </v-tooltip>:
         <strong>{{ footer.meldungen }}</strong>
         <br>Anzahl Beobachtungen (ingesamt):
         <strong>{{ footer.beobachtungen }}</strong>
@@ -29,7 +39,7 @@
       no-data-text="Keine Daten gefunden."
       item-key="artname"
       :loading="loading"
-      class="elevation-1"
+      class="elevation-9"
       :items-per-page="100"
       hide-default-footer
       @click:row="openTChart">
@@ -78,9 +88,9 @@ export default {
       headers: [
         { text: "Rang", value: "rang" },
         { text: "Insektenart", value: "artname" },
-        { text: "Meldungen", value: "meldungen" },
+        { text: "Beobachtungen", value: "beobachtungen" },
         { text: "Anzahl", value: "anzahl" },
-        { text: "Individuen pro Meldung", value: "durchschnitt" },
+        { text: "Individuen pro Beobachtung", value: "durchschnitt" },
         { text: "Wissenschaftlicher Name", value: "full_name" }
       ],
       topAllLebensraeume: [],
@@ -267,10 +277,10 @@ export default {
             taxon: beobachtung.taxon,
             gattung: beobachtung.gattung,
             anzahl: Number.parseInt(beobachtung.anzahl),
-            meldungen: 1
+            beobachtungen: 1
           });
         } else {
-          ++entry.meldungen;
+          ++entry.beobachtungen;
           entry.anzahl += Number.parseInt(beobachtung.anzahl);
         }
       });
@@ -278,7 +288,7 @@ export default {
       const top = [...uniqueMap.values()];
       // Sort by meldungen and then by anzahl
       top.sort(function(a, b) {
-        return b.meldungen - a.meldungen || b.anzahl - a.anzahl;
+        return b.beobachtungen- a.beobachtungen|| b.anzahl - a.anzahl;
       });
       // Return a sliced with pasted rang into it.
       let sliced = top.slice(0, slice);
@@ -286,7 +296,7 @@ export default {
         sliced[i].rang = i + 1;
         sliced[i].durchschnitt = Number.parseFloat(
           Number.parseInt(sliced[i].anzahl) /
-            Number.parseInt(sliced[i].meldungen)
+            Number.parseInt(sliced[i].beobachtungen)
         ).toFixed(2);
       }
       return sliced;
