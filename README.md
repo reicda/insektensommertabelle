@@ -10,7 +10,8 @@
     - [Run your tests](#run-your-tests)
     - [Lints and fixes files](#lints-and-fixes-files)
     - [Customize configuration](#customize-configuration)
-    - [Publish on github pages](#publish-on-github-pages)
+  - [Publish on github pages](#publish-on-github-pages)
+  - [FTP connection](#ftp-connection)
 
 ## Project setup
 
@@ -46,7 +47,7 @@ yarn run lint
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
-### Publish on github pages
+## Publish on github pages
 
 Publish on github pages is handling via github actions by pushing tags
 following [SemVer vX.Y.Z](https://semver.org/).
@@ -54,4 +55,14 @@ following [SemVer vX.Y.Z](https://semver.org/).
 ```shell
 git tag vX.Y.Z
 git push origin --tags
+```
+
+## FTP connection
+
+```shell
+ncftp -u $FTP_USER -p $FTP_PASSWORD $FTP_SERVER
+```
+
+```shell
+ncftp -u $FTP_USER -p $FTP_PASSWORD ftp://$FTP_SERVER/insektensommertabelle
 ```
