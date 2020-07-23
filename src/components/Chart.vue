@@ -100,6 +100,7 @@ export default {
           );
           break;
         default:
+          // eslint-disable-next-line
           console.log("default");
       }
        // Create actual insect as last
