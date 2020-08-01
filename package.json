@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "papaparse": "^5.2.0",
+    "jquery-csv": "^1.0.11",
     "taucharts": "^2.8.0",
     "vue": "^2.6.11",
     "vuetify": "^2.2.28"

@@ -67,7 +67,7 @@
 <script>
 import TheTableHeader from "./TheTableHeader";
 import Chart from "./Chart";
-import Papa from "papaparse";
+var jcsv = require('jquery-csv');
 
 export default {
   name: "TheTable",
@@ -237,9 +237,8 @@ export default {
         }
       )
         .then(response => response.text())
-        .then(data => {
-          var results = Papa.parse(data, { header: true });
-          return results.data;
+        .then(raw => {
+          return jcsv.toObjects(raw)
         })
         .then(data => {
           this.beobachtungen = data;
@@ -257,7 +256,9 @@ export default {
     anzahlMeldungen(beobachtungen) {
       let latlon = [];
       beobachtungen.forEach(function(beobachtung) {
-        latlon.push(beobachtung.kopfid);
+        if (beobachtung.kopfid !== "") {
+          latlon.push(beobachtung.kopfid);
+        }
       });
       // prevent duplicates
       var meldungen = latlon
