@@ -1,0 +1,161 @@
+diff --git a/src/components/TheTable.vue b/src/components/TheTable.vue
+index 6b5ba5d..fb58002 100644
+--- a/src/components/TheTable.vue
++++ b/src/components/TheTable.vue
+@@ -95,10 +95,125 @@ export default {
+         { text: "Wissenschaftlicher Name", value: "full_name" }
+       ],
+       //helper for creating comparison data for chart
+-      // topAllLebensraeume: [],
+-      // topAllBundeslaender: [],
+-      // allTop100: [],
+-      // TODO: incl. rankings: [] from TheTableHeader.vue
++      topAllLebensraeume: [],
++      topAllBundeslaender: [],
++      allTop100: [],
++      rankings: [
++        { header: "Ranglisten" },
++        {
++          name: "Top 100",
++          group: "Top 100",
++          value: "top100",
++          avatar: "images/brd.svg"
++        },
++        { divider: true },
++        { header: "TOP100 Bundesländer" },
++        {
++          name: "Baden-Württemberg",
++          avatar: "images/bw.svg",
++          group: "TOP100 Bundesländer",
++          value: "top100Bundeslaender"
++        },
++        {
++          name: "Bayern",
++          avatar: "images/by.svg",
++          group: "TOP100 Bundesländer",
++          value: "top100Bundeslaender"
++        },
++        {
++          name: "Brandenburg & Berlin",
++          avatar: "images/bb_be.svg",
++          group: "TOP100 Bundesländer",
++          value: "top100Bundeslaender"
++        },
++        {
++          name: "Hessen",
++          avatar: "images/he.svg",
++          group: "TOP100 Bundesländer",
++          value: "top100Bundeslaender"
++        },
++        {
++          name: "Mecklenburg-Vorpommern",
++          avatar: "images/mv.svg",
++          group: "TOP100 Bundesländer",
++          value: "top100Bundeslaender"
++        },
++        {
++          name: "Niedersachsen & Bremen",
++          avatar: "images/ni_hb.svg",
++          group: "TOP100 Bundesländer",
++          value: "top100Bundeslaender"
++        },
++        {
++          name: "Nordrhein-Westfalen",
++          avatar: "images/nw.svg",
++          group: "TOP100 Bundesländer",
++          value: "top100Bundeslaender"
++        },
++        {
++          name: "Rheinland-Pfalz",
++          avatar: "images/rp.svg",
++          group: "TOP100 Bundesländer",
++          value: "top100Bundeslaender"
++        },
++        {
++          name: "Saarland",
++          avatar: "images/sl.svg",
++          group: "TOP100 Bundesländer",
++          value: "top100Bundeslaender"
++        },
++        {
++          name: "Sachsen",
++          avatar: "images/sn.svg",
++          group: "TOP100 Bundesländer",
++          value: "top100Bundeslaender"
++        },
++        {
++          name: "Sachsen-Anhalt",
++          avatar: "images/st.svg",
++          group: "TOP100 Bundesländer",
++          value: "top100Bundeslaender"
++        },
++        {
++          name: "Schleswig-Holstein & Hamburg",
++          avatar: "images/sh_hh.svg",
++          group: "TOP100 Bundesländer",
++          value: "top100Bundeslaender"
++        },
++        {
++          name: "Thüringen",
++          avatar: "images/th.svg",
++          group: "TOP100 Bundesländer",
++          value: "top100Bundeslaender"
++        },
++        { divider: true },
++        { header: "TOP5 Lebensräume" },
++        {
++          name: "Garten",
++          group: "TOP5 Lebensräume",
++          value: "top5Lebensraeume"
++        },
++        {
++          name: "Balkon",
++          group: "TOP5 Lebensräume",
++          value: "top5Lebensraeume"
++        },
++        { name: "Park", group: "TOP5 Lebensräume", value: "top5Lebensraeume" },
++        { name: "Wiese", group: "TOP5 Lebensräume", value: "top5Lebensraeume" },
++        { name: "Wald", group: "TOP5 Lebensräume", value: "top5Lebensraeume" },
++        { name: "Feld", group: "TOP5 Lebensräume", value: "top5Lebensraeume" },
++        { name: "Teich", group: "TOP5 Lebensräume", value: "top5Lebensraeume" },
++        {
++          name: "Bach/Fluss",
++          group: "TOP5 Lebensräume",
++          value: "top5Lebensraeume"
++        },
++        {
++          name: "Sonstiges",
++          group: "TOP5 Lebensräume",
++          value: "top5Lebensraeume"
++        }
++      ],
+       beobachtungen: [],
+       tableData: []
+     };
+@@ -149,7 +264,7 @@ export default {
+             );
+             this.tableData = this.top(beobachtungenLebensraum, 5);
+             // //helper for creating comparison data for chart
+-            // this.allTopLebensraeume(5);
++            this.allTopLebensraeume(5);
+           } else {
+             // Attention! In the original data a space is prefixed.
+             // Except for "Garten".
+@@ -174,7 +289,7 @@ export default {
+           this.footer.meldungen = this.anzahlMeldungen(beobachtungenBundesland);
+           this.tableData = this.top(beobachtungenBundesland, 100);
+           // //helper for creating comparison data for chart
+-          // this.allTopBundeslaender(100);
++          this.allTopBundeslaender(100);
+           break;
+         }
+         default: {
+@@ -246,7 +361,7 @@ export default {
+           this.footer.beobachtungen = this.beobachtungen.length;
+           this.footer.meldungen = this.anzahlMeldungen(this.beobachtungen);
+           // //helper for creating comparison data for chart
+-          // this.allTop();
++          this.allTop();
+         })
+         .then(() => {
+           this.loading = false;
