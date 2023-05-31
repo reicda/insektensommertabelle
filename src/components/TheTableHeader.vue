@@ -61,6 +61,7 @@ export default {
     return {
       search: "",
       campains: [
+        { text: "August 2022", value: "2022-08" },
         { text: "Juni 2022", value: "2022-06" },
         { text: "August 2021", value: "2021-08" },
         { text: "Juni 2021", value: "2021-06" },
