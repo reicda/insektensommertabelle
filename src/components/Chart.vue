@@ -23,6 +23,8 @@ import juni2021_top100 from "./juni2021_top100";
 import august2021_top100 from "./august2021_top100";
 import juni2022_top100 from "./juni2022_top100";
 import august2022_top100 from "./august2022_top100";
+import juni2023_top100 from "./juni2023_top100";
+import august2023_top100 from "./august2023_top100";
 
 import juni2018_top100Bundeslaender from "./juni2018_top100Bundeslaender";
 import august2018_top100Bundeslaender from "./august2018_top100Bundeslaender";
@@ -34,6 +36,8 @@ import juni2021_top100Bundeslaender from "./juni2021_top100Bundeslaender";
 import august2021_top100Bundeslaender from "./august2021_top100Bundeslaender";
 import juni2022_top100Bundeslaender from "./juni2022_top100Bundeslaender";
 import august2022_top100Bundeslaender from "./august2022_top100Bundeslaender";
+import juni2023_top100Bundeslaender from "./juni2023_top100Bundeslaender";
+import august2023_top100Bundeslaender from "./august2023_top100Bundeslaender";
 
 import juni2018_top5Lebensraeume from "./juni2018_top5Lebensraeume";
 import august2018_top5Lebensraeume from "./august2018_top5Lebensraeume";
@@ -45,6 +49,8 @@ import juni2021_top5Lebensraeume from "./juni2021_top5Lebensraeume";
 import august2021_top5Lebensraeume from "./august2021_top5Lebensraeume";
 import juni2022_top5Lebensraeume from "./juni2022_top5Lebensraeume";
 import august2022_top5Lebensraeume from "./august2022_top5Lebensraeume";
+import juni2023_top5Lebensraeume from "./juni2023_top5Lebensraeume";
+import august2023_top5Lebensraeume from "./august2023_top5Lebensraeume";
 
 export default {
   props: {
@@ -74,6 +80,8 @@ export default {
     this.past_top100.push(august2021_top100);
     this.past_top100.push(juni2022_top100);
     this.past_top100.push(august2022_top100);
+    this.past_top100.push(juni2023_top100);
+    this.past_top100.push(august2023_top100);
 
     this.past_top100Bundeslaender.push(juni2018_top100Bundeslaender);
     this.past_top100Bundeslaender.push(august2018_top100Bundeslaender);
@@ -85,6 +93,8 @@ export default {
     this.past_top100Bundeslaender.push(august2021_top100Bundeslaender);
     this.past_top100Bundeslaender.push(juni2022_top100Bundeslaender);
     this.past_top100Bundeslaender.push(august2022_top100Bundeslaender);
+    this.past_top100Bundeslaender.push(juni2023_top100Bundeslaender);
+    this.past_top100Bundeslaender.push(august2023_top100Bundeslaender);
 
     this.past_top5Lebensraeume.push(juni2018_top5Lebensraeume);
     this.past_top5Lebensraeume.push(august2018_top5Lebensraeume);
@@ -96,6 +106,8 @@ export default {
     this.past_top5Lebensraeume.push(august2021_top5Lebensraeume);
     this.past_top5Lebensraeume.push(juni2022_top5Lebensraeume);
     this.past_top5Lebensraeume.push(august2022_top5Lebensraeume);
+    this.past_top5Lebensraeume.push(juni2023_top5Lebensraeume);
+    this.past_top5Lebensraeume.push(august2023_top5Lebensraeume);
   },
   mounted() {
     document.getElementById("tchart").innerHTML = "";
