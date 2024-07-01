@@ -280,12 +280,13 @@ export default {
 
     },
     top(beobachtungen, slice) {
-      // Totaling anzahl and meldungen for unique artname
+      // Totaling anzahl and meldungen for unique artid
       const uniqueMap = new Map();
       beobachtungen.forEach(beobachtung => {
-        const entry = uniqueMap.get(beobachtung.artname);
+        const entry = uniqueMap.get(beobachtung.artid);
         if (!entry) {
-          uniqueMap.set(beobachtung.artname, {
+          uniqueMap.set(beobachtung.artid, {
+            artid: beobachtung.artid,
             artname: beobachtung.artname,
             taxon: beobachtung.taxon,
             gattung: beobachtung.gattung,
