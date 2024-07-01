@@ -3,6 +3,7 @@ import csv
 import os
 import re
 import json
+import logging
 from datetime import datetime 
 
 BASE_URL = 'https://karten.nabu.de/insektensommer/data/beobachtungen-'
@@ -40,6 +41,7 @@ LEBENSRAEUME = [
 END_YEAR = datetime.now().year
 GENERATED_FILES = []
 
+logging.basicConfig(format='[%(asctime)s][%(levelname)s]:%(message)s', datefmt='%d.%m.%y %H:%M:%S', level=logging.INFO)
 
 
 class Season:
@@ -188,6 +190,7 @@ class Season:
         writeFile.write(f"export const {prefix}_top5Lebensraeume={str(data)};\n")
         writeFile.write(f"export default {prefix}_top5Lebensraeume;")
         writeFile.close()
+        logging.info(f"{prefix}_top5Lebensraeume.js generated.")
 
     def writeBundeslandTop100(self):
         prefix = f"{self.month}{self.year}"
@@ -196,6 +199,8 @@ class Season:
         writeFile.write(f"export const {prefix}_top100Bundeslaender={data};\n")
         writeFile.write(f"export default {prefix}_top100Bundeslaender;")
         writeFile.close()
+        logging.info(f"{prefix}_top100Bundeslaender.js generated.")
+
 
     def writeTop100(self):
         prefix = f"{self.month}{self.year}"
@@ -204,6 +209,8 @@ class Season:
         writeFile.write(f"export const {prefix}_top100={data};\n")
         writeFile.write(f"export default {prefix}_top100;")
         writeFile.close()
+        logging.info(f"{prefix}_top100.js generated.")
+
     
     # END SECTION WRITE FUNCTIONS
 
@@ -212,6 +219,7 @@ if __name__ == '__main__':
     seasons = []
 
     # Check available files using regular expressions
+    logging.info(f"Loading existing previous data.")
     for fileName in os.listdir(DATA_PATH):
         match = re.match(r'(?P<month>juni|august)(?P<year>\d{4})', fileName)
         if match is not None:
@@ -222,15 +230,19 @@ if __name__ == '__main__':
                 available.append((year, month))
 
     # Creates Season Object for every missing file
+    logging.info(f"Loading missing data")
     for year in range(START_YEAR, END_YEAR + 1):
         for month in MONTHS:
             if (year, month) not in available:
                 season = Season(year, month)
                 if season.status == 200:
                     seasons.append(season)
+                    logging.info(f"Season {month}{year} created.")
+                else:
+                    logging.info(f"Season {month}{year} does not exist yet.")
                 season = None
 
-
+    logging.info("Generating missing data files.")
     for season in seasons:
         season.writeData()
 
@@ -242,6 +254,7 @@ if __name__ == '__main__':
 
     data = {}
 
+    logging.info(f"Generating DataImport.vue...")
     with open("src/components/dataimport/DataImport.vue", "w") as writeFile:
         # begin file
         writeFile.write("<script>\n/* GENERATED AUTOMATICALLY DO NOT CHANGE */\n")
@@ -265,3 +278,4 @@ if __name__ == '__main__':
         # end file
         writeFile.write("</script>\n")
         writeFile.close()
+    logging.info(f"Generated DataImport.vue successfully")
